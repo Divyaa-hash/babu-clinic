@@ -1,0 +1,569 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Admin Appointments | {{ clinic.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .appointments-container {
+        padding: 2rem 0;
+        background: #f8f9fa;
+        min-height: 100vh;
+    }
+    
+    .appointments-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 20px 20px;
+    }
+    
+    .appointments-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .appointments-header p {
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border-left: 4px solid;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .stat-card .icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+    
+    .stat-card .value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-card .label {
+        color: #666;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .stat-card.online { border-left-color: #667eea; }
+    .stat-card.online .icon { color: #667eea; }
+    
+    .stat-card.walkin { border-left-color: #43e97b; }
+    .stat-card.walkin .icon { color: #43e97b; }
+    
+    .stat-card.today-online { border-left-color: #4facfe; }
+    .stat-card.today-online .icon { color: #4facfe; }
+    
+    .stat-card.today-walkin { border-left-color: #fa709a; }
+    .stat-card.today-walkin .icon { color: #fa709a; }
+    
+    .filters-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-search {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-search:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    
+    .btn-export {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-export:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);
+        color: white;
+    }
+    
+    .table-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .table {
+        margin-bottom: 0;
+    }
+    
+    .table thead th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        padding: 1rem;
+    }
+    
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .table td {
+        vertical-align: middle;
+        padding: 1rem;
+    }
+    
+    .badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+    
+    .btn-action {
+        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-action:hover {
+        transform: translateY(-2px);
+    }
+    
+    .modal-content {
+        border-radius: 20px;
+        border: none;
+    }
+    
+    .modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .modal-title {
+        font-weight: 600;
+    }
+    
+    .btn-close {
+        filter: brightness(0) invert(1);
+    }
+    
+    .btn-update {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: 500;
+    }
+    
+    .btn-update:hover {
+        color: white;
+    }
+</style>
+
+<div class="appointments-container">
+    <div class="appointments-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-calendar-alt me-2"></i>Admin Appointments</h1>
+                    <p>Manage all appointments - view, edit, delete, and export</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card online">
+                    <div class="icon"><i class="fas fa-globe"></i></div>
+                    <div class="value" id="totalOnline">0</div>
+                    <div class="label">Total Online Appointments</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card walkin">
+                    <div class="icon"><i class="fas fa-walking"></i></div>
+                    <div class="value" id="totalWalkin">0</div>
+                    <div class="label">Total Walk-in Appointments</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card today-online">
+                    <div class="icon"><i class="fas fa-calendar-day"></i></div>
+                    <div class="value" id="todayOnline">0</div>
+                    <div class="label">Today's Online Patients</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card today-walkin">
+                    <div class="icon"><i class="fas fa-user-clock"></i></div>
+                    <div class="value" id="todayWalkin">0</div>
+                    <div class="label">Today's Walk-in Patients</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="filters-card">
+            <div class="row">
+                <div class="col-md-2 mb-3">
+                    <input type="text" class="form-control" id="searchPatient" placeholder="Search Patient...">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <input type="text" class="form-control" id="searchDoctor" placeholder="Search Doctor...">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <input type="date" class="form-control" id="filterDate">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <select class="form-select" id="filterStatus">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <select class="form-select" id="filterBookingType">
+                        <option value="">All Types</option>
+                        <option value="Online">Online</option>
+                        <option value="Walk-in">Walk-in</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <button class="btn btn-search w-100" onclick="loadAppointments()">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Button -->
+        <div class="mb-3">
+            <button class="btn btn-export" onclick="exportAllPDF()">
+                <i class="fas fa-file-pdf me-2"></i>Export All to PDF
+            </button>
+        </div>
+        
+        <!-- Appointments Table -->
+        <div class="table-card">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Appointment ID</th>
+                            <th>Token</th>
+                            <th>Patient Name</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Phone</th>
+                            <th>Booking Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTableBody">
+                        <tr>
+                            <td colspan="10" class="text-center">Loading appointments...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Status Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Appointment Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="appointmentId">
+                <label class="form-label">Status:</label>
+                <select class="form-select" id="newStatus">
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-update" onclick="updateStatus()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let allAppointments = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadStatistics();
+    loadAppointments();
+});
+
+async function loadStatistics() {
+    try {
+        const response = await fetch('/api/appointment-statistics/');
+        const result = await response.json();
+        
+        if (result.success) {
+            document.getElementById('totalOnline').textContent = result.statistics.total_online;
+            document.getElementById('totalWalkin').textContent = result.statistics.total_walkin;
+            document.getElementById('todayOnline').textContent = result.statistics.today_online;
+            document.getElementById('todayWalkin').textContent = result.statistics.today_walkin;
+        }
+    } catch (error) {
+        console.error('Error loading statistics:', error);
+    }
+}
+
+async function loadAppointments() {
+    try {
+        const bookingType = document.getElementById('filterBookingType').value;
+        const status = document.getElementById('filterStatus').value;
+        const date = document.getElementById('filterDate').value;
+        
+        let url = '/api/get-appointments/?';
+        if (bookingType) url += `booking_type=${bookingType}&`;
+        if (status) url += `status=${status}&`;
+        if (date) url += `date=${date}`;
+        
+        const response = await fetch(url);
+        const result = await response.json();
+        
+        if (result.success) {
+            allAppointments = result.appointments;
+            renderAppointments(result.appointments);
+        }
+    } catch (error) {
+        console.error('Error loading appointments:', error);
+    }
+}
+
+function renderAppointments(appointments) {
+    const tbody = document.getElementById('appointmentsTableBody');
+    
+    if (appointments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" class="text-center">No appointments found</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = appointments.map(apt => `
+        <tr>
+            <td>${apt.appointment_id || 'N/A'}</td>
+            <td>${apt.token_number || 'N/A'}</td>
+            <td>${apt.patient_name}</td>
+            <td>${apt.doctor}</td>
+            <td>${apt.appointment_date}</td>
+            <td>${apt.appointment_time}</td>
+            <td>${apt.phone}</td>
+            <td><span class="badge bg-${getBookingTypeColor(apt.booking_type)}">${apt.booking_type || 'N/A'}</span></td>
+            <td><span class="badge bg-${getStatusColor(apt.status)}">${apt.status}</span></td>
+            <td>
+                <button class="btn btn-sm btn-success" onclick="downloadSinglePDF('${apt.appointment_id}')" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                <button class="btn btn-sm btn-warning" onclick="openStatusModal('${apt.id}', '${apt.status}')" title="Update Status"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteAppointment('${apt.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function getStatusColor(status) {
+    const colors = {
+        'Pending': 'warning',
+        'Confirmed': 'success',
+        'Completed': 'primary',
+        'Cancelled': 'danger'
+    };
+    return colors[status] || 'secondary';
+}
+
+function getBookingTypeColor(type) {
+    const colors = {
+        'Online': 'primary',
+        'Walk-in': 'success'
+    };
+    return colors[type] || 'secondary';
+}
+
+function openStatusModal(id, currentStatus) {
+    document.getElementById('appointmentId').value = id;
+    document.getElementById('newStatus').value = currentStatus;
+    new bootstrap.Modal(document.getElementById('statusModal')).show();
+}
+
+async function updateStatus() {
+    const id = document.getElementById('appointmentId').value;
+    const newStatus = document.getElementById('newStatus').value;
+    
+    try {
+        const response = await fetch('/api/update-appointment-status/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                appointment_id: id,
+                status: newStatus
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Status updated successfully');
+            bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
+            loadAppointments();
+            loadStatistics();
+        } else {
+            alert('Error updating status: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while updating status');
+    }
+}
+
+async function deleteAppointment(id) {
+    if (confirm('Are you sure you want to delete this appointment?')) {
+        try {
+            const response = await fetch('/api/delete-appointment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    appointment_id: id
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Appointment deleted successfully');
+                loadAppointments();
+                loadStatistics();
+            } else {
+                alert('Error deleting appointment: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while deleting appointment');
+        }
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function exportAllPDF() {
+    const bookingType = document.getElementById('filterBookingType').value;
+    let url = '/api/export-appointments-pdf/?';
+    if (bookingType) url += `booking_type=${bookingType}`;
+    
+    window.open(url, '_blank');
+}
+
+function downloadSinglePDF(appointmentId) {
+    if (!appointmentId) {
+        alert('Appointment ID not available');
+        return;
+    }
+    const url = `/api/export-single-appointment-pdf/?appointment_id=${appointmentId}`;
+    window.open(url, '_blank');
+}
+
+// Search functionality
+document.getElementById('searchPatient').addEventListener('input', filterAppointments);
+document.getElementById('searchDoctor').addEventListener('input', filterAppointments);
+
+function filterAppointments() {
+    const patientSearch = document.getElementById('searchPatient').value.toLowerCase();
+    const doctorSearch = document.getElementById('searchDoctor').value.toLowerCase();
+    
+    const filtered = allAppointments.filter(apt => {
+        const matchPatient = apt.patient_name.toLowerCase().includes(patientSearch);
+        const matchDoctor = apt.doctor.toLowerCase().includes(doctorSearch);
+        return matchPatient && matchDoctor;
+    });
+    
+    renderAppointments(filtered);
+}
+</script>
+{% endblock %}

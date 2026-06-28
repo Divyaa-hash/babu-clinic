@@ -1,0 +1,436 @@
+{% extends 'clinic/base.html' %}
+
+{% block content %}
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: pulse 20s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    
+    .hero-logo-img {
+        height: 80px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .hero-tagline {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        opacity: 0.95;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .hero-buttons .btn {
+        border-radius: 50px;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .hero-buttons .btn-primary {
+        background: white;
+        color: #667eea;
+        border: none;
+    }
+    
+    .hero-buttons .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        color: #764ba2;
+    }
+    
+    .hero-buttons .btn-outline-light {
+        border: 2px solid white;
+        background: transparent;
+    }
+    
+    .hero-buttons .btn-outline-light:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-3px);
+    }
+    
+    .hero-image {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .hero-image img {
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        border: 5px solid rgba(255,255,255,0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .hero-image img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 3rem 0;
+        }
+        
+        .hero-title {
+            font-size: 1.8rem;
+        }
+        
+        .hero-tagline {
+            font-size: 1.1rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 0.95rem;
+        }
+        
+        .hero-logo-img {
+            height: 60px;
+        }
+        
+        .hero-buttons {
+            flex-direction: column;
+        }
+        
+        .hero-buttons .btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+        }
+        
+        .hero-image img {
+            border-radius: 15px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 1.5rem;
+        }
+        
+        .hero-tagline {
+            font-size: 1rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 0.9rem;
+        }
+        
+        .hero-logo-img {
+            height: 50px;
+        }
+    }
+</style>
+{% endblock %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">{{ clinic.name }}</h1>
+                    <p class="hero-tagline">{{ clinic.tagline }}</p>
+                    <p class="hero-subtitle">Providing world-class healthcare services with compassion and excellence at Redhills, Chennai.</p>
+                    <div class="hero-buttons">
+                        <a href="{% url 'appointment' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar-check me-2"></i>Book Appointment
+                        </a>
+                        <a href="{% url 'doctors' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-user-doctor me-2"></i>Meet Our Doctors
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <img src="{{ STATIC_URL }}images/clinic.jpeg" alt="{{ clinic.name }}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="why-choose-section py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title">Why Choose Us</h2>
+            <p class="section-subtitle">Experience the best healthcare with our premium services</p>
+        </div>
+        <div class="row">
+            {% for item in why_choose_us %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="why-card">
+                    <div class="why-icon" style="background-color: {{ item.color|default:'#6c5ce7' }}20;">
+                        <i class="fas {{ item.icon }}"></i>
+                    </div>
+                    <h4>{{ item.title }}</h4>
+                    <p>{{ item.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Facilities Section -->
+<section class="facilities-section py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title">Facilities Available</h2>
+            <p class="section-subtitle">State-of-the-art medical facilities for your care</p>
+        </div>
+        <div class="row">
+            {% for facility in facilities %}
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                <div class="facility-card">
+                    <div class="facility-icon" style="background-color: {{ facility.color }};">
+                        <i class="fas {{ facility.icon }}"></i>
+                    </div>
+                    <h5>{{ facility.name }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Patient Reviews Section -->
+<section class="reviews-section py-5 bg-light">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title">Patient Reviews</h2>
+            <p class="section-subtitle">What our patients say about us</p>
+        </div>
+        <div class="row" id="reviewsContainer">
+            <div class="col-12 text-center">
+                <p>Loading reviews...</p>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                <i class="fas fa-pen me-2"></i>Write a Review
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Review Submission Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Share Your Experience</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm">
+                    <div class="mb-3">
+                        <label for="patientName" class="form-label">Your Name *</label>
+                        <input type="text" class="form-control" id="patientName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Department</label>
+                        <select class="form-select" id="department">
+                            <option value="">Select Department</option>
+                            <option value="General Medicine">General Medicine</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Gynecology">Gynecology</option>
+                            <option value="Diabetology">Diabetology</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="ENT">ENT</option>
+                            <option value="Paediatrics">Paediatrics</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating *</label>
+                        <select class="form-select" id="rating" required>
+                            <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                            <option value="3">⭐⭐⭐ - Good</option>
+                            <option value="2">⭐⭐ - Fair</option>
+                            <option value="1">⭐ - Poor</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewText" class="form-label">Your Review *</label>
+                        <textarea class="form-control" id="reviewText" rows="4" required placeholder="Share your experience..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<section class="cta-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2>Ready to Experience Premium Healthcare?</h2>
+                <p>Book your appointment today and let our expert doctors take care of your health.</p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <a href="{% url 'appointment' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-calendar-check me-2"></i>Book Appointment
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Load reviews from Firebase
+document.addEventListener('DOMContentLoaded', function() {
+    loadReviews();
+});
+
+function loadReviews() {
+    fetch('/api/get-reviews/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                renderReviews(data.reviews);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading reviews:', error);
+            document.getElementById('reviewsContainer').innerHTML = '<div class="col-12 text-center"><p>No reviews available yet.</p></div>';
+        });
+}
+
+function renderReviews(reviews) {
+    const container = document.getElementById('reviewsContainer');
+    
+    if (reviews.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center"><p>No reviews available yet. Be the first to share your experience!</p></div>';
+        return;
+    }
+    
+    container.innerHTML = reviews.map(review => `
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="review-card">
+                <div class="review-rating">
+                    ${generateStars(review.rating)}
+                </div>
+                <p class="review-text">"${review.review_text}"</p>
+                <div class="review-author">
+                    <strong>${review.patient_name}</strong>
+                    <span class="review-dept">${review.department || ''}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function generateStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars += '<i class="fas fa-star"></i>';
+        } else {
+            stars += '<i class="far fa-star"></i>';
+        }
+    }
+    return stars;
+}
+
+// Handle review submission
+document.getElementById('reviewForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        patient_name: document.getElementById('patientName').value,
+        department: document.getElementById('department').value,
+        rating: parseInt(document.getElementById('rating').value),
+        review_text: document.getElementById('reviewText').value
+    };
+    
+    fetch('/api/submit-review/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            bootstrap.Modal.getInstance(document.getElementById('reviewModal')).hide();
+            document.getElementById('reviewForm').reset();
+            loadReviews(); // Reload reviews
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

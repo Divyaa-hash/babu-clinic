@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Babu Super Speciality Clinic</title>
+    <meta name="description" content="Contact Babu Super Speciality Clinic for appointments, emergencies, or any medical queries. Get our address, phone numbers, and email.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="contact-info">
+                        <span><i class="fas fa-phone"></i> +91 98765 43210</span>
+                        <span><i class="fas fa-envelope"></i> info@babuclinic.com</span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="Babu Super Speciality Clinic" class="logo">
+                <span class="brand-text">Babu Super Speciality Clinic</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">About Us</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="about.html">Our Story</a></li>
+                            <li><a class="dropdown-item" href="team.html">Our Team</a></li>
+                            <li><a class="dropdown-item" href="facilities.html">Facilities</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Departments</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="cardiology.html">Cardiology</a></li>
+                            <li><a class="dropdown-item" href="neurology.html">Neurology</a></li>
+                            <li><a class="dropdown-item" href="orthopedics.html">Orthopedics</a></li>
+                            <li><a class="dropdown-item" href="gynecology.html">Gynecology</a></li>
+                            <li><a class="dropdown-item" href="pediatrics.html">Pediatrics</a></li>
+                            <li><a class="dropdown-item" href="emergency.html">Emergency Care</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="doctors.html">Doctors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="health-packages.html">Health Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-appointment" href="appointment.html">Book Appointment</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header py-5 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Contact Us</li>
+                </ol>
+            </nav>
+            <h1 class="page-title">Contact Us</h1>
+            <p class="page-subtitle">Get in touch with us for appointments, emergencies, or any medical queries</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Contact Form -->
+                <div class="col-lg-8">
+                    <div class="contact-form-card">
+                        <h2 class="form-title mb-4">Send us a Message</h2>
+                        
+                        <!-- Success/Error Messages -->
+                        <div id="formErrors" class="d-none"></div>
+                        <div id="successMessage" class="d-none"></div>
+
+                        <form id="contactForm" class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Your Name *</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                    <div class="invalid-feedback">Please enter your name</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <div class="invalid-feedback">Please enter a valid email address</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" maxlength="10" required>
+                                    <div class="invalid-feedback">Please enter a valid 10-digit phone number</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label">Subject *</label>
+                                    <select class="form-control" id="subject" name="subject" required>
+                                        <option value="">Select Subject</option>
+                                        <option value="appointment">Appointment Booking</option>
+                                        <option value="query">General Query</option>
+                                        <option value="emergency">Emergency</option>
+                                        <option value="feedback">Feedback</option>
+                                        <option value="complaint">Complaint</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a subject</div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="message" class="form-label">Message *</label>
+                                    <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Please describe your query or message in detail..."></textarea>
+                                    <div class="invalid-feedback">Please enter your message</div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="terms" required>
+                                        <label class="form-check-label" for="terms">
+                                            I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a> *
+                                        </label>
+                                        <div class="invalid-feedback">You must agree to the terms and conditions</div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </button>
+                                    <button type="reset" class="btn btn-outline-secondary btn-lg ms-2">
+                                        <i class="fas fa-redo me-2"></i>Reset Form
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-lg-4">
+                    <!-- Contact Details -->
+                    <div class="contact-info-card mb-4">
+                        <h4 class="card-title">
+                            <i class="fas fa-hospital me-2"></i>Contact Information
+                        </h4>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <h5>Address</h5>
+                                    <p>123 Healthcare Avenue<br>Medical District<br>Bangalore - 560001<br>Karnataka, India</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone-alt"></i>
+                                <div>
+                                    <h5>Phone Numbers</h5>
+                                    <p><strong>Main:</strong> <a href="tel:+919876543210">+91 98765 43210</a><br>
+                                    <strong>Emergency:</strong> <a href="tel:+919876543211">+91 98765 43211</a><br>
+                                    <strong>Appointment:</strong> <a href="tel:+919876543212">+91 98765 43212</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h5>Email Addresses</h5>
+                                    <p><strong>General:</strong> <a href="mailto:info@babuclinic.com">info@babuclinic.com</a><br>
+                                    <strong>Appointments:</strong> <a href="mailto:appointments@babuclinic.com">appointments@babuclinic.com</a><br>
+                                    <strong>Emergency:</strong> <a href="mailto:emergency@babuclinic.com">emergency@babuclinic.com</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Working Hours -->
+                    <div class="hours-card mb-4">
+                        <h4 class="card-title">
+                            <i class="fas fa-clock me-2"></i>Working Hours
+                        </h4>
+                        <div class="working-hours">
+                            <div class="hours-item">
+                                <span class="day">Monday - Saturday</span>
+                                <span class="time">8:00 AM - 8:00 PM</span>
+                            </div>
+                            <div class="hours-item">
+                                <span class="day">Sunday</span>
+                                <span class="time">9:00 AM - 6:00 PM</span>
+                            </div>
+                            <div class="hours-item emergency">
+                                <span class="day">Emergency Services</span>
+                                <span class="time">24/7 Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions-card">
+                        <h4 class="card-title">
+                            <i class="fas fa-bolt me-2"></i>Quick Actions
+                        </h4>
+                        <div class="quick-actions">
+                            <a href="appointment.html" class="btn btn-primary btn-block mb-2">
+                                <i class="fas fa-calendar-plus me-2"></i>Book Appointment
+                            </a>
+                            <a href="tel:+919876543211" class="btn btn-danger btn-block mb-2">
+                                <i class="fas fa-ambulance me-2"></i>Emergency Call
+                            </a>
+                            <a href="doctors.html" class="btn btn-outline-primary btn-block">
+                                <i class="fas fa-user-md me-2"></i>Find Doctors
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section py-5">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="section-title">Find Us on Map</h2>
+                <p class="section-subtitle">Locate our clinic easily with Google Maps</p>
+            </div>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.3658255343!2d77.59456231482158!3d12.956821590878425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15d8c5d4d4d7%3A0x5d4d4d4d4d4d4d4d!2sBangalore%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1234567890"
+                    width="100%" 
+                    height="450" 
+                    style="border:0; border-radius: 15px;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="direction-card text-center">
+                        <i class="fas fa-car"></i>
+                        <h5>By Car</h5>
+                        <p>Ample parking available. Located on Healthcare Avenue, easily accessible from main roads.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="direction-card text-center">
+                        <i class="fas fa-bus"></i>
+                        <h5>By Public Transport</h5>
+                        <p>Bus stop: Medical District Stop (5-minute walk). Metro station: Healthcare Station (10-minute walk).</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="direction-card text-center">
+                        <i class="fas fa-wheelchair"></i>
+                        <h5>Accessibility</h5>
+                        <p>Wheelchair accessible entrance and facilities available for differently-abled patients.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Find answers to common questions</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    How do I book an appointment?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    You can book an appointment through our website by visiting the appointment page, calling our appointment helpline, or visiting the clinic in person. Online booking is the most convenient option.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    What should I bring for my first visit?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Please bring a valid ID proof, previous medical records, list of current medications, insurance details (if applicable), and any relevant test reports.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    Do you accept insurance?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, we accept most major insurance plans. Please check with our front desk staff about specific insurance coverage and cashless facilities.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    What are your emergency services?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We provide 24/7 emergency services including trauma care, cardiac emergencies, stroke care, and surgical emergencies. Our emergency helpline is always available.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    How can I get my test reports?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Test reports can be collected from the reception, emailed to your registered email, or accessed through our patient portal within 24-48 hours.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-about">
+                        <img src="images/logo-white.png" alt="Babu Super Speciality Clinic" class="footer-logo mb-3">
+                        <p>Babu Super Speciality Clinic is committed to providing exceptional healthcare services with compassion and excellence.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="doctors.html">Our Doctors</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="health-packages.html">Health Packages</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h4>Departments</h4>
+                    <ul class="footer-links">
+                        <li><a href="cardiology.html">Cardiology</a></li>
+                        <li><a href="neurology.html">Neurology</a></li>
+                        <li><a href="orthopedics.html">Orthopedics</a></li>
+                        <li><a href="gynecology.html">Gynecology</a></li>
+                        <li><a href="pediatrics.html">Pediatrics</a></li>
+                        <li><a href="emergency.html">Emergency Care</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h4>Contact Info</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Avenue, Medical District, Bangalore - 560001</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-envelope"></i> info@babuclinic.com</li>
+                        <li><i class="fas fa-clock"></i> 24/7 Emergency Services Available</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2024 Babu Super Speciality Clinic. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                        <a href="terms.html" class="footer-link">Terms & Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Contact form functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            const phoneInput = document.getElementById('phone');
+
+            // Phone number formatting
+            phoneInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+            });
+
+            // Form submission
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!this.checkValidity()) {
+                    e.stopPropagation();
+                    this.classList.add('was-validated');
+                    return;
+                }
+
+                // Collect form data
+                const formData = new FormData(this);
+                const contactData = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    subject: formData.get('subject'),
+                    message: formData.get('message')
+                };
+
+                // Submit form
+                submitContactForm(contactData);
+            });
+        });
+
+        // Submit contact form function
+        function submitContactForm(data) {
+            const submitButton = document.querySelector('#contactForm button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+
+            // Simulate API call
+            setTimeout(() => {
+                // Show success message
+                const successDiv = document.getElementById('successMessage');
+                successDiv.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <h5 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Message Sent Successfully!</h5>
+                        <p>Thank you for contacting us, <strong>${data.name}</strong>. We have received your message and will get back to you within 24 hours.</p>
+                        <p>A confirmation email has been sent to: <strong>${data.email}</strong></p>
+                        <hr>
+                        <p class="mb-0">For urgent queries, please call our helpline: <a href="tel:+919876543210">+91 98765 43210</a></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                successDiv.classList.remove('d-none');
+
+                // Reset form
+                document.getElementById('contactForm').reset();
+                document.getElementById('contactForm').classList.remove('was-validated');
+
+                // Reset button
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+
+                // Scroll to success message
+                successDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 2000);
+        }
+    </script>
+
+    <style>
+        /* Contact Page Specific Styles */
+        .contact-form-card, .contact-info-card, .hours-card, .quick-actions-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .contact-item i {
+            font-size: 20px;
+            color: #667eea;
+            margin-right: 15px;
+            margin-top: 5px;
+            min-width: 20px;
+        }
+
+        .contact-item h5 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .contact-item p {
+            margin: 0;
+            color: #666;
+        }
+
+        .hours-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .hours-item:last-child {
+            border-bottom: none;
+        }
+
+        .hours-item.emergency {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .hours-item.emergency .day,
+        .hours-item.emergency .time {
+            color: white;
+            font-weight: bold;
+        }
+
+        .day {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .time {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .map-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .direction-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .direction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .direction-card i {
+            font-size: 40px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .direction-card h5 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .direction-card p {
+            color: #666;
+            margin: 0;
+        }
+
+        .quick-actions .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-item i {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .hours-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .direction-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</body>
+</html>

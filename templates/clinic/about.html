@@ -1,0 +1,191 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}About Us | {{ clinic.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .about-section {
+        background: #f8f9fa;
+    }
+    
+    .about-image img {
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        height: auto;
+    }
+    
+    .about-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .about-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .about-icon {
+        font-size: 2.5rem;
+        color: #667eea;
+        margin-bottom: 1rem;
+    }
+    
+    .about-card h3 {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    
+    .values-list ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .values-list li {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e0e0e0;
+        color: #666;
+    }
+    
+    .values-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .values-list i {
+        color: #667eea;
+        margin-right: 0.75rem;
+    }
+    
+    .contact-info-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 2rem;
+    }
+    
+    .contact-info-box h3 {
+        margin-bottom: 1.5rem;
+    }
+    
+    .contact-info-box p {
+        margin-bottom: 1rem;
+        opacity: 0.95;
+    }
+    
+    .contact-info-box i {
+        margin-right: 0.75rem;
+    }
+    
+    .contact-info-box .btn {
+        background: white;
+        color: #667eea;
+        border: none;
+    }
+    
+    @media (max-width: 768px) {
+        .about-image img {
+            border-radius: 15px;
+        }
+        
+        .about-card {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<!-- Page Header -->
+<section class="page-header py-5 bg-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active">About Us</li>
+            </ol>
+        </nav>
+        <h1 class="page-title">About {{ clinic.name }}</h1>
+        <p class="page-subtitle">{{ clinic.tagline }}</p>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section py-5">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6">
+                <div class="about-image">
+                    <img src="{{ STATIC_URL }}images/clinic.jpeg" alt="{{ clinic.name }}" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-content">
+                    <h2>Welcome to {{ clinic.name }}</h2>
+                    <p>{{ clinic.name }} is a premier multi-speciality healthcare facility located in Redhills, Chennai. We are committed to providing exceptional medical care with compassion, excellence, and a patient-first approach.</p>
+                    <p>Our state-of-the-art facility is equipped with modern medical technology and staffed by highly qualified specialists who are dedicated to delivering personalized healthcare services.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-lg-4 mb-4">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>To provide accessible, affordable, and high-quality healthcare services to our community with compassion and excellence.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>To be the leading healthcare provider in Redhills, known for excellence in patient care, medical expertise, and community service.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Our Values</h3>
+                    <p>Patient First Approach, Quality Healthcare, Affordable Treatment, Trusted Medical Professionals, and Modern Infrastructure.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="values-list">
+                    <h3>Our Core Values</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Patient First Approach</li>
+                        <li><i class="fas fa-check-circle"></i> Quality Healthcare</li>
+                        <li><i class="fas fa-check-circle"></i> Affordable Treatment</li>
+                        <li><i class="fas fa-check-circle"></i> Trusted Medical Professionals</li>
+                        <li><i class="fas fa-check-circle"></i> Modern Infrastructure</li>
+                        <li><i class="fas fa-check-circle"></i> Compassionate Care</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="contact-info-box">
+                    <h3>Contact Information</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</p>
+                    <p><i class="fas fa-phone"></i> {{ clinic.phone }}</p>
+                    <p><i class="fas fa-envelope"></i> {{ clinic.email }}</p>
+                    <a href="{% url 'appointment' %}" class="btn btn-primary mt-3">
+                        <i class="fas fa-calendar-check me-2"></i>Book Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

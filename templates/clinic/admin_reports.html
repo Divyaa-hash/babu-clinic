@@ -1,0 +1,168 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Reports | {{ clinic.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .reports-container {
+        padding: 2rem 0;
+        background: #f8f9fa;
+        min-height: 100vh;
+    }
+    
+    .reports-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 20px 20px;
+    }
+    
+    .reports-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .reports-header p {
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+    
+    .report-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        text-align: center;
+    }
+    
+    .report-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .report-card .icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .report-card h3 {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    
+    .report-card p {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn-report {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-report:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+</style>
+
+<div class="reports-container">
+    <div class="reports-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-file-pdf me-2"></i>Reports & Exports</h1>
+                    <p>Generate and export appointment reports in PDF format</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-chart-line me-2"></i>Export Reports</h2>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="report-card">
+                    <div class="icon"><i class="fas fa-calendar-day"></i></div>
+                    <h3>Today's Report</h3>
+                    <p>Export all appointments for today</p>
+                    <button onclick="exportReport('today')" class="btn btn-report">
+                        <i class="fas fa-download me-2"></i>Export PDF
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="report-card">
+                    <div class="icon"><i class="fas fa-calendar-week"></i></div>
+                    <h3>Weekly Report</h3>
+                    <p>Export appointments for this week</p>
+                    <button onclick="exportReport('week')" class="btn btn-report">
+                        <i class="fas fa-download me-2"></i>Export PDF
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="report-card">
+                    <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Monthly Report</h3>
+                    <p>Export appointments for this month</p>
+                    <button onclick="exportReport('month')" class="btn btn-report">
+                        <i class="fas fa-download me-2"></i>Export PDF
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="report-card">
+                    <div class="icon"><i class="fas fa-file-invoice"></i></div>
+                    <h3>All Appointments</h3>
+                    <p>Export complete appointment history</p>
+                    <button onclick="exportReport('all')" class="btn btn-report">
+                        <i class="fas fa-download me-2"></i>Export PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function exportReport(type) {
+    // Call the existing API endpoint with GET
+    let url = '/api/export-appointments-pdf/';
+    if (type) {
+        url += '?report_type=' + type;
+    }
+    
+    // Open in new window to download PDF immediately
+    window.open(url, '_blank');
+}
+</script>
+{% endblock %}

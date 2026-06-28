@@ -1,0 +1,204 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Our Doctors | {{ clinic.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .doctors-container {
+        padding: 4rem 0;
+        background: #f8f9fa;
+    }
+    
+    .doctors-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .doctors-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+    
+    .doctors-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+    
+    .doctor-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border-left: 4px solid #667eea;
+    }
+    
+    .doctor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .doctor-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .doctor-specialization {
+        color: #667eea;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .doctor-qualification {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+    
+    .departments-section {
+        background: white;
+        padding: 4rem 0;
+        margin-top: 4rem;
+    }
+    
+    .departments-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .departments-header h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+    
+    .departments-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+    
+    .department-card {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 2px solid #e0e0e0;
+    }
+    
+    .department-card:hover {
+        transform: translateY(-5px);
+        border-color: #667eea;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+    }
+    
+    .dept-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 1.8rem;
+        color: white;
+    }
+    
+    .department-card h4 {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .doctors-header h1 {
+            font-size: 2rem;
+        }
+        
+        .doctors-header p {
+            font-size: 1rem;
+        }
+        
+        .doctor-card {
+            padding: 1.5rem;
+        }
+        
+        .doctor-name {
+            font-size: 1.2rem;
+        }
+        
+        .doctor-specialization {
+            font-size: 1rem;
+        }
+        
+        .departments-header h2 {
+            font-size: 2rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .doctors-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .doctor-card {
+            padding: 1.25rem;
+        }
+        
+        .departments-header h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="doctors-container">
+    <div class="container">
+        <div class="doctors-header">
+            <h1>Our Doctors</h1>
+            <p>Meet our team of highly qualified and experienced medical professionals</p>
+        </div>
+        
+        <div class="row">
+            {% for doctor in doctors %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="doctor-card">
+                    <h3 class="doctor-name">{{ doctor.name }}</h3>
+                    <p class="doctor-specialization">{{ doctor.specialization }}</p>
+                    <p class="doctor-qualification">{{ doctor.qualification }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Departments Section -->
+<section class="departments-section">
+    <div class="container">
+        <div class="departments-header">
+            <h2>Our Specialist Departments</h2>
+            <p>Expert care across multiple medical specialties</p>
+        </div>
+        <div class="row">
+            {% for dept in departments %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="department-card">
+                    <div class="dept-icon" style="background-color: {{ dept.color }};">
+                        <i class="fas {{ dept.icon }}"></i>
+                    </div>
+                    <h4>{{ dept.name }}</h4>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

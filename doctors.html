@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Doctors - Babu Super Speciality Clinic</title>
+    <meta name="description" content="Meet our team of expert doctors at Babu Super Speciality Clinic. Highly qualified specialists across all medical departments.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="contact-info">
+                        <span><i class="fas fa-phone"></i> +91 98765 43210</span>
+                        <span><i class="fas fa-envelope"></i> info@babuclinic.com</span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="Babu Super Speciality Clinic" class="logo">
+                <span class="brand-text">Babu Super Speciality Clinic</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">About Us</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="about.html">Our Story</a></li>
+                            <li><a class="dropdown-item" href="team.html">Our Team</a></li>
+                            <li><a class="dropdown-item" href="facilities.html">Facilities</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Departments</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="cardiology.html">Cardiology</a></li>
+                            <li><a class="dropdown-item" href="neurology.html">Neurology</a></li>
+                            <li><a class="dropdown-item" href="orthopedics.html">Orthopedics</a></li>
+                            <li><a class="dropdown-item" href="gynecology.html">Gynecology</a></li>
+                            <li><a class="dropdown-item" href="pediatrics.html">Pediatrics</a></li>
+                            <li><a class="dropdown-item" href="emergency.html">Emergency Care</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="doctors.html">Doctors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="health-packages.html">Health Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-appointment" href="appointment.html">Book Appointment</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header py-5 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Our Doctors</li>
+                </ol>
+            </nav>
+            <h1 class="page-title">Our Expert Doctors</h1>
+            <p class="page-subtitle">Meet our team of highly qualified and experienced medical professionals</p>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="search-filter py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="search-box position-relative">
+                        <input type="text" id="doctorSearch" class="form-control form-control-lg" placeholder="Search doctors by name or specialty...">
+                        <i class="fas fa-search position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%); color: #667eea;"></i>
+                        <div id="searchResults" class="position-absolute w-100 bg-white border rounded shadow-lg" style="top: 100%; z-index: 1000; display: none;"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="filter-buttons d-flex gap-2 flex-wrap">
+                        <button class="btn btn-outline-primary filter-btn active" data-filter="all">All Doctors</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="cardiology">Cardiology</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="neurology">Neurology</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="orthopedics">Orthopedics</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="gynecology">Gynecology</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="pediatrics">Pediatrics</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Grid -->
+    <section class="doctors-section py-5">
+        <div class="container">
+            <div class="row" id="doctorsGrid">
+                <!-- Cardiology Doctors -->
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="cardiology">
+                    <div class="doctor-card">
+                        <img src="images/doctor1.jpg" alt="Dr. Ramesh Babu" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Ramesh Babu</h4>
+                            <p class="doctor-specialty">Senior Cardiologist</p>
+                            <p class="doctor-experience">15+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MD, DM (Cardiology)</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(4.9)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-ramesh" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-ramesh" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="cardiology">
+                    <div class="doctor-card">
+                        <img src="images/doctor2.jpg" alt="Dr. Vidya Sagar" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Vidya Sagar</h4>
+                            <p class="doctor-specialty">Interventional Cardiologist</p>
+                            <p class="doctor-experience">12+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MD, DM (Cardiology)</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(4.8)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-vidya" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-vidya" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Neurology Doctors -->
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="neurology">
+                    <div class="doctor-card">
+                        <img src="images/doctor3.jpg" alt="Dr. Priya Nair" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Priya Nair</h4>
+                            <p class="doctor-specialty">Neurologist</p>
+                            <p class="doctor-experience">12+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MD, DM (Neurology)</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(4.9)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-priya" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-priya" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="neurology">
+                    <div class="doctor-card">
+                        <img src="images/doctor4.jpg" alt="Dr. Karthik Ramesh" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Karthik Ramesh</h4>
+                            <p class="doctor-specialty">Neurosurgeon</p>
+                            <p class="doctor-experience">18+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MS, MCh (Neurosurgery)</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span class="text-muted">(4.7)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-karthik" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-karthik" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orthopedics Doctors -->
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="orthopedics">
+                    <div class="doctor-card">
+                        <img src="images/doctor5.jpg" alt="Dr. Arjun Kumar" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Arjun Kumar</h4>
+                            <p class="doctor-specialty">Orthopedic Surgeon</p>
+                            <p class="doctor-experience">18+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MS (Orthopedics)</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(4.9)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-arjun" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-arjun" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="orthopedics">
+                    <div class="doctor-card">
+                        <img src="images/doctor6.jpg" alt="Dr. Meera Krishnan" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Meera Krishnan</h4>
+                            <p class="doctor-specialty">Joint Replacement Surgeon</p>
+                            <p class="doctor-experience">14+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MS (Orthopedics), Fellowship</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(4.8)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-meera" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-meera" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gynecology Doctors -->
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="gynecology">
+                    <div class="doctor-card">
+                        <img src="images/doctor7.jpg" alt="Dr. Sneha Reddy" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Sneha Reddy</h4>
+                            <p class="doctor-specialty">Gynecologist & Obstetrician</p>
+                            <p class="doctor-experience">10+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MS (OBGYN)</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(4.9)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-sneha" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-sneha" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="gynecology">
+                    <div class="doctor-card">
+                        <img src="images/doctor8.jpg" alt="Dr. Anita Desai" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Anita Desai</h4>
+                            <p class="doctor-specialty">Infertility Specialist</p>
+                            <p class="doctor-experience">16+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MS (OBGYN), Fellowship</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span class="text-muted">(4.7)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-anita" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-anita" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pediatrics Doctors -->
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="pediatrics">
+                    <div class="doctor-card">
+                        <img src="images/doctor9.jpg" alt="Dr. Rahul Menon" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Rahul Menon</h4>
+                            <p class="doctor-specialty">Pediatrician</p>
+                            <p class="doctor-experience">8+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MD (Pediatrics)</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(4.8)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-rahul" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-rahul" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 doctor-item" data-specialty="pediatrics">
+                    <div class="doctor-card">
+                        <img src="images/doctor10.jpg" alt="Dr. Nisha Patel" class="doctor-image">
+                        <div class="doctor-info">
+                            <h4>Dr. Nisha Patel</h4>
+                            <p class="doctor-specialty">Neonatologist</p>
+                            <p class="doctor-experience">11+ Years Experience</p>
+                            <p class="doctor-qualification">MBBS, MD (Pediatrics), Fellowship</p>
+                            <div class="doctor-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span class="text-muted">(4.6)</span>
+                            </div>
+                            <div class="doctor-actions">
+                                <a href="doctor-profile.html?id=dr-nisha" class="btn btn-sm btn-primary me-2">View Profile</a>
+                                <a href="appointment.html?doctor=dr-nisha" class="btn btn-sm btn-outline-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-5">
+                <button class="btn btn-primary btn-lg" id="loadMoreBtn">Load More Doctors</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2>Can't Find the Doctor You're Looking For?</h2>
+                    <p>Contact our helpline and we'll help you find the right specialist for your needs.</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <a href="tel:+919876543210" class="btn btn-light btn-lg me-2">Call Helpline</a>
+                    <a href="contact.html" class="btn btn-outline-light btn-lg">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-about">
+                        <img src="images/logo-white.png" alt="Babu Super Speciality Clinic" class="footer-logo mb-3">
+                        <p>Babu Super Speciality Clinic is committed to providing exceptional healthcare services with compassion and excellence.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="doctors.html">Our Doctors</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="health-packages.html">Health Packages</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h4>Departments</h4>
+                    <ul class="footer-links">
+                        <li><a href="cardiology.html">Cardiology</a></li>
+                        <li><a href="neurology.html">Neurology</a></li>
+                        <li><a href="orthopedics.html">Orthopedics</a></li>
+                        <li><a href="gynecology.html">Gynecology</a></li>
+                        <li><a href="pediatrics.html">Pediatrics</a></li>
+                        <li><a href="emergency.html">Emergency Care</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h4>Contact Info</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Avenue, Medical District, Bangalore - 560001</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-envelope"></i> info@babuclinic.com</li>
+                        <li><i class="fas fa-clock"></i> 24/7 Emergency Services Available</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2024 Babu Super Speciality Clinic. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                        <a href="terms.html" class="footer-link">Terms & Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const doctorItems = document.querySelectorAll('.doctor-item');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    const filter = this.getAttribute('data-filter');
+
+                    doctorItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-specialty') === filter) {
+                            item.style.display = 'block';
+                            item.classList.add('animate-fade-in-up');
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Load more functionality
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', function() {
+                    // In a real application, this would load more doctors from the server
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+                    
+                    setTimeout(() => {
+                        this.textContent = 'No More Doctors';
+                        this.disabled = true;
+                    }, 1500);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

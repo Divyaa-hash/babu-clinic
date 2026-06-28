@@ -1,0 +1,311 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}Admin Dashboard | {{ clinic.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        padding: 2rem 0;
+        background: #f8f9fa;
+        min-height: 100vh;
+    }
+    
+    .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 20px 20px;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .dashboard-header p {
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border-left: 4px solid;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .stat-card .icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        opacity: 0.8;
+    }
+    
+    .stat-card .value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-card .label {
+        color: #666;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+    
+    .stat-card.total { border-left-color: #667eea; }
+    .stat-card.total .icon { color: #667eea; }
+    
+    .stat-card.today { border-left-color: #f093fb; }
+    .stat-card.today .icon { color: #f093fb; }
+    
+    .stat-card.online { border-left-color: #4facfe; }
+    .stat-card.online .icon { color: #4facfe; }
+    
+    .stat-card.walkin { border-left-color: #43e97b; }
+    .stat-card.walkin .icon { color: #43e97b; }
+    
+    .stat-card.pending { border-left-color: #fa709a; }
+    .stat-card.pending .icon { color: #fa709a; }
+    
+    .stat-card.confirmed { border-left-color: #fee140; }
+    .stat-card.confirmed .icon { color: #fee140; }
+    
+    .stat-card.consultation { border-left-color: #30cfd0; }
+    .stat-card.consultation .icon { color: #30cfd0; }
+    
+    .stat-card.completed { border-left-color: #a8edea; }
+    .stat-card.completed .icon { color: #a8edea; }
+    
+    .stat-card.cancelled { border-left-color: #ff6b6b; }
+    .stat-card.cancelled .icon { color: #ff6b6b; }
+    
+    .stat-card.doctors { border-left-color: #667eea; }
+    .stat-card.doctors .icon { color: #667eea; }
+    
+    .action-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        text-align: center;
+    }
+    
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .action-card .icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .action-card h4 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .action-card p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .btn-action {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+    
+    .alert-danger {
+        border-radius: 15px;
+        border: none;
+        padding: 1.5rem;
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</h1>
+                    <p>Welcome back! Here's your clinic overview.</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="{% url 'admin_logout' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            {{ error }}
+        </div>
+        {% endif %}
+        
+        <!-- Statistics Cards -->
+        <h2 class="section-title"><i class="fas fa-chart-bar me-2"></i>Appointment Statistics</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card total">
+                    <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="value">{{ total_appointments }}</div>
+                    <div class="label">Total Appointments</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card today">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <div class="value">{{ today_appointments }}</div>
+                    <div class="label">Today's Appointments</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card online">
+                    <div class="icon"><i class="fas fa-laptop"></i></div>
+                    <div class="value">{{ online_appointments }}</div>
+                    <div class="label">Online Appointments</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card walkin">
+                    <div class="icon"><i class="fas fa-walking"></i></div>
+                    <div class="value">{{ walkin_appointments }}</div>
+                    <div class="label">Walk-in Appointments</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Status Cards -->
+        <h2 class="section-title"><i class="fas fa-tasks me-2"></i>Appointment Status</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="stat-card pending">
+                    <div class="icon"><i class="fas fa-hourglass-half"></i></div>
+                    <div class="value">{{ pending_count }}</div>
+                    <div class="label">Pending</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="stat-card confirmed">
+                    <div class="icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="value">{{ confirmed_count }}</div>
+                    <div class="label">Confirmed</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="stat-card consultation">
+                    <div class="icon"><i class="fas fa-user-md"></i></div>
+                    <div class="value">{{ in_consultation_count }}</div>
+                    <div class="label">In Consultation</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="stat-card completed">
+                    <div class="icon"><i class="fas fa-check-double"></i></div>
+                    <div class="value">{{ completed_count }}</div>
+                    <div class="label">Completed</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="stat-card cancelled">
+                    <div class="icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="value">{{ cancelled_count }}</div>
+                    <div class="label">Cancelled</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="stat-card doctors">
+                    <div class="icon"><i class="fas fa-user-doctor"></i></div>
+                    <div class="value">{{ total_doctors }}</div>
+                    <div class="label">Total Doctors</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <h2 class="section-title"><i class="fas fa-bolt me-2"></i>Quick Actions</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card">
+                    <div class="icon"><i class="fas fa-list"></i></div>
+                    <h4>View Appointments</h4>
+                    <p>Manage and view all appointments</p>
+                    <a href="{% url 'admin_appointments' %}" class="btn btn-action">
+                        <i class="fas fa-arrow-right me-2"></i>Go to Appointments
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card">
+                    <div class="icon"><i class="fas fa-user-plus"></i></div>
+                    <h4>Walk-in Appointment</h4>
+                    <p>Register walk-in patients</p>
+                    <a href="{% url 'walkin_appointment' %}" class="btn btn-action">
+                        <i class="fas fa-arrow-right me-2"></i>Add Walk-in
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card">
+                    <div class="icon"><i class="fas fa-file-pdf"></i></div>
+                    <h4>Reports</h4>
+                    <p>Export appointment reports</p>
+                    <a href="{% url 'admin_reports' %}" class="btn btn-action">
+                        <i class="fas fa-arrow-right me-2"></i>View Reports
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card">
+                    <div class="icon"><i class="fas fa-home"></i></div>
+                    <h4>Back to Website</h4>
+                    <p>Return to public website</p>
+                    <a href="{% url 'home' %}" class="btn btn-action">
+                        <i class="fas fa-arrow-right me-2"></i>Go to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
