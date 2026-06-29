@@ -2,6 +2,7 @@ services:
   - type: web
     name: babu-clinic
     env: python
+    runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn babuclinic.wsgi:application
     envVars:
