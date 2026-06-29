@@ -177,7 +177,7 @@
             <div class="col-lg-6 mb-4">
                 <div class="contact-info-box">
                     <h3>Contact Information</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <a href="https://www.google.com/maps/search/?api=1&query=BABU+Super+Speciality+Clinic,+84/3+TVK+Street,+Redhills,+Chennai+600052" target="_blank" style="color: inherit; text-decoration: underline;">{{ clinic.address }}</a></p>
                     <p><i class="fas fa-phone"></i> {{ clinic.phone }}</p>
                     <p><i class="fas fa-envelope"></i> {{ clinic.email }}</p>
                     <a href="{% url 'appointment' %}" class="btn btn-primary mt-3">
