@@ -5,7 +5,7 @@
 {% block content %}
 <style>
     .dashboard-container {
-        padding: 2rem 0;
+        padding: 3rem 0;
         background: #f8f9fa;
         min-height: 100vh;
     }
@@ -13,30 +13,33 @@
     .dashboard-header {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 2rem 0;
-        margin-bottom: 2rem;
-        border-radius: 0 0 20px 20px;
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+        border-radius: 0 0 25px 25px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
     }
     
     .dashboard-header h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
     }
     
     .dashboard-header p {
-        opacity: 0.9;
+        opacity: 0.95;
         margin-bottom: 0;
+        font-size: 1.1rem;
     }
     
     .stat-card {
         background: white;
         border-radius: 15px;
-        padding: 1.5rem;
+        padding: 2rem;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
         height: 100%;
         border-left: 4px solid;
+        margin-bottom: 1rem;
     }
     
     .stat-card:hover {
@@ -51,14 +54,14 @@
     }
     
     .stat-card .value {
-        font-size: 2rem;
+        font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
     }
     
     .stat-card .label {
         color: #666;
-        font-size: 0.95rem;
+        font-size: 1rem;
         font-weight: 500;
     }
     
@@ -95,11 +98,12 @@
     .action-card {
         background: white;
         border-radius: 15px;
-        padding: 1.5rem;
+        padding: 2rem;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
         height: 100%;
         text-align: center;
+        margin-bottom: 1rem;
     }
     
     .action-card:hover {
@@ -108,8 +112,8 @@
     }
     
     .action-card .icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -118,13 +122,14 @@
     
     .action-card h4 {
         font-weight: 600;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 1.25rem;
     }
     
     .action-card p {
         color: #666;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
     }
     
     .btn-action {
@@ -144,16 +149,24 @@
     }
     
     .section-title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
         color: #333;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #667eea;
+        display: inline-block;
     }
     
     .alert-danger {
         border-radius: 15px;
         border: none;
         padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .container {
+        max-width: 1400px;
     }
 </style>
 
@@ -265,7 +278,7 @@
         <!-- Quick Actions -->
         <h2 class="section-title"><i class="fas fa-bolt me-2"></i>Quick Actions</h2>
         <div class="row g-4 mb-5">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-xl-3 col-lg-6 col-md-6">
                 <div class="action-card">
                     <div class="icon"><i class="fas fa-list"></i></div>
                     <h4>View Appointments</h4>
@@ -275,7 +288,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-xl-3 col-lg-6 col-md-6">
                 <div class="action-card">
                     <div class="icon"><i class="fas fa-user-plus"></i></div>
                     <h4>Walk-in Appointment</h4>
@@ -285,7 +298,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-xl-3 col-lg-6 col-md-6">
                 <div class="action-card">
                     <div class="icon"><i class="fas fa-file-pdf"></i></div>
                     <h4>Reports</h4>
@@ -295,7 +308,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-xl-3 col-lg-6 col-md-6">
                 <div class="action-card">
                     <div class="icon"><i class="fas fa-home"></i></div>
                     <h4>Back to Website</h4>
