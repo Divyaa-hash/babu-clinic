@@ -1,0 +1,24 @@
+runtime: python312
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: "babuclinic.settings"
+  DEBUG: "False"
+
+handlers:
+- url: /static
+  static_dir: staticfiles
+  secure: always
+
+- url: /.*
+  script: auto
+  secure: always
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+  target_cpu_utilization: 0.6
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10

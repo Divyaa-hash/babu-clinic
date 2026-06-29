@@ -18,6 +18,9 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
     ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME'))
+if os.environ.get('GAE_APPLICATION'):
+    # Google App Engine
+    ALLOWED_HOSTS.append('.appspot.com')
 
 # Application definition
 INSTALLED_APPS = [
@@ -124,6 +127,9 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
     CSRF_TRUSTED_ORIGINS.append(f'https://{os.environ.get("RENDER_EXTERNAL_HOSTNAME")}')
+if os.environ.get('GAE_APPLICATION'):
+    # Google App Engine
+    CSRF_TRUSTED_ORIGINS.append('https://*.appspot.com')
 
 # Authentication Configuration
 LOGIN_URL = '/admin-login/'
