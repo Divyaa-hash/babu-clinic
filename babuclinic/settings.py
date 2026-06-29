@@ -14,7 +14,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+# Get the Render domain or use localhost for development
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
+    ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME'))
 
 # Application definition
 INSTALLED_APPS = [
@@ -112,13 +115,15 @@ CLINIC_NAME = 'BABU SUPER SPECIALITY CLINIC'
 CLINIC_TAGLINE = 'Your Health is Our Priority'
 CLINIC_ADDRESS = 'No. 84/3, TVK Street, Redhills, Chennai – 600052 (Kalyan Jewels Back Side)'
 CLINIC_PHONE = '7305493125'
-CLINIC_EMAIL = 'info@babuclinic.com'
+CLINIC_EMAIL = 'babusuperspecialityclinic@gmail.com'
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
 ]
+if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
+    CSRF_TRUSTED_ORIGINS.append(f'https://{os.environ.get("RENDER_EXTERNAL_HOSTNAME")}')
 
 # Authentication Configuration
 LOGIN_URL = '/admin-login/'
