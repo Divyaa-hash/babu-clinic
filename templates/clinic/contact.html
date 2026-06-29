@@ -26,7 +26,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h4>Address</h4>
-                            <p><a href="https://www.google.com/maps/search/?api=1&query=BABU+Super+Speciality+Clinic,+84/3+TVK+Street,+Redhills,+Chennai+600052" target="_blank" style="color: inherit; text-decoration: underline;">{{ clinic.address }}</a></p>
+                            <p><a href="https://www.google.com/maps/search/?api=1&query=BABU+Super+Speciality+Clinic,+84/3+TVK+Street,+Redhills,+Chennai+600052" target="_blank" style="color: inherit; text-decoration: underline;"></a>{{ clinic.address }}</a></p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -54,11 +54,14 @@
                 </div>
                 
                 <div class="map-placeholder mt-4">
-                    <div class="map-content">
-                        <i class="fas fa-map-marked-alt"></i>
-                        <p>Google Map Placeholder</p>
-                        <small>{{ clinic.address }}</small>
-                    </div>
+                    <iframe 
+                        src="https://maps.google.com/maps?q=BABU+Super+Speciality+Clinic,+84/3+TVK+Street,+Redhills,+Chennai+600052&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        width="100%" 
+                        height="300" 
+                        style="border:0; border-radius: 10px;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
                 </div>
             </div>
             
