@@ -204,7 +204,7 @@
             {% for item in why_choose_us %}
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="why-card">
-                    <div class="why-icon" style="background-color: {{ item.color|default:'#6c5ce7' }}20;">
+                    <div class="why-icon" style="--icon-bg: {{ item.color|default:'#6c5ce7' }}20; background-color: var(--icon-bg);">
                         <i class="fas {{ item.icon }}"></i>
                     </div>
                     <h4>{{ item.title }}</h4>
@@ -227,7 +227,7 @@
             {% for facility in facilities %}
             <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
                 <div class="facility-card">
-                    <div class="facility-icon" style="background-color: {{ facility.color }};">
+                    <div class="facility-icon" style="--facility-bg: {{ facility.color }}; background-color: var(--facility-bg);">
                         <i class="fas {{ facility.icon }}"></i>
                     </div>
                     <h5>{{ facility.name }}</h5>
