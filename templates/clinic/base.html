@@ -142,6 +142,9 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'track_appointment' %}active{% endif %}" href="{% url 'track_appointment' %}">Track Appointment</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-appointment ms-3" href="{% url 'appointment' %}">Book Now</a>
                     </li>
                 </ul>

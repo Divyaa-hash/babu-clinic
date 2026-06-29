@@ -19,7 +19,6 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
-from twilio.rest import Client
 
 # Initialize Firebase
 try:
@@ -269,7 +268,7 @@ def api_appointment(request):
             if db:
                 db.collection('appointments').add(appointment_data)
             
-            return JsonResponse({'success': True, 'message': 'Appointment booked successfully!'})
+            return JsonResponse({'success': True, 'message': 'Appointment booked successfully!', 'appointment_id': appointment_id, 'token_number': token_number})
             
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
@@ -494,6 +493,7 @@ def api_get_appointments(request):
             booking_type = request.GET.get('booking_type', '')
             status = request.GET.get('status', '')
             date = request.GET.get('date', '')
+            doctor = request.GET.get('doctor', '')
             
             # Query Firebase
             appointments = []
@@ -507,11 +507,13 @@ def api_get_appointments(request):
                     query = query.where('status', '==', status)
                 if date:
                     query = query.where('appointment_date', '==', date)
+                if doctor:
+                    query = query.where('doctor', '==', doctor)
                 
                 docs = query.stream()
                 for doc in docs:
                     appointment = doc.to_dict()
-                    appointment['id'] = doc.id
+                    appointment['firebase_id'] = doc.id
                     appointments.append(appointment)
             
             return JsonResponse({'success': True, 'appointments': appointments})

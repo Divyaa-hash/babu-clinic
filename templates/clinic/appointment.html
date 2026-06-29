@@ -207,8 +207,18 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <h3>Appointment Booked Successfully!</h3>
-                <p class="mb-4">We will contact you shortly to confirm your appointment.</p>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="window.location.href='{% url 'home' %}'">OK</button>
+                <p class="mb-4">Please save your appointment details for future reference.</p>
+                <div class="alert alert-info mb-4">
+                    <div class="mb-2">
+                        <strong>Appointment ID:</strong> <span id="modalAppointmentId" class="fs-5">-</span>
+                    </div>
+                    <div>
+                        <strong>Token Number:</strong> <span id="modalTokenNumber" class="fs-5">-</span>
+                    </div>
+                </div>
+                <p class="mb-4">Use your Appointment ID to track your appointment status on our website.</p>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="window.location.href='{% url 'track_appointment' %}'">Track Appointment</button>
+                <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" onclick="window.location.href='{% url 'home' %}'">Home</button>
             </div>
         </div>
     </div>
@@ -242,6 +252,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             
             if (result.success) {
+                document.getElementById('modalAppointmentId').textContent = result.appointment_id;
+                document.getElementById('modalTokenNumber').textContent = result.token_number;
                 const modal = new bootstrap.Modal(document.getElementById('successModal'));
                 modal.show();
             } else {

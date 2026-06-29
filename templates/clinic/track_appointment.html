@@ -1,0 +1,250 @@
+{% extends 'clinic/base.html' %}
+
+{% block content %}
+<style>
+.appointment-result-card {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.appointment-result-card .card {
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+.appointment-result-card .card-header {
+    border-radius: 15px 15px 0 0;
+}
+
+.appointment-result-card .card-body label {
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.appointment-result-card .card-body p {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+</style>
+
+<!-- Page Header -->
+<section class="page-header py-5 bg-light">
+    <div class="container">
+        <h1 class="page-title">Track Appointment</h1>
+        <p class="page-subtitle">Check your appointment status</p>
+    </div>
+</section>
+
+<!-- Track Appointment Section -->
+<section class="track-appointment-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="appointment-form-card">
+                    <div class="form-header">
+                        <h2>Find Your Appointment</h2>
+                        <p>Enter your Appointment ID or Phone Number to track your appointment</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="trackAppointmentForm">
+                            <div class="mb-3">
+                                <label for="appointmentId" class="form-label">Appointment ID</label>
+                                <input type="text" class="form-control" id="appointmentId" name="appointment_id" placeholder="e.g., APT-12345678">
+                            </div>
+                            <div class="text-center mb-3">
+                                <span class="text-muted">OR</span>
+                            </div>
+                            <div class="mb-4">
+                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phoneNumber" name="phone_number" placeholder="e.g., 9876543210">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-search me-2"></i>Search Appointment
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Appointment Result Card -->
+                <div id="appointmentResult" class="appointment-result-card mt-4" style="display: none;">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Appointment Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Appointment ID:</label>
+                                    <p id="resultAppointmentId">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Token Number:</label>
+                                    <p id="resultTokenNumber">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Patient Name:</label>
+                                    <p id="resultPatientName">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Doctor Name:</label>
+                                    <p id="resultDoctorName">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Department:</label>
+                                    <p id="resultDepartment">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Appointment Date:</label>
+                                    <p id="resultAppointmentDate">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Appointment Time:</label>
+                                    <p id="resultAppointmentTime">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Booking Type:</label>
+                                    <p id="resultBookingType">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Current Status:</label>
+                                    <p id="resultStatus">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Symptoms:</label>
+                                    <p id="resultSymptoms">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="fw-bold">Booking Date & Time:</label>
+                                    <p id="resultBookingTime">-</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button class="btn btn-success" onclick="downloadPatientPDF()">
+                                    <i class="fas fa-file-pdf me-2"></i>Download Appointment PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Appointment Found -->
+                <div id="noAppointment" class="alert alert-warning mt-4" style="display: none;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    No appointment found. Please check your Appointment ID or Phone Number.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentAppointment = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('trackAppointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        trackAppointment();
+    });
+});
+
+async function trackAppointment() {
+    const appointmentId = document.getElementById('appointmentId').value.trim();
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    
+    if (!appointmentId && !phoneNumber) {
+        alert('Please enter either Appointment ID or Phone Number');
+        return;
+    }
+    
+    let url = '/api/track-appointment/?';
+    if (appointmentId) url += `appointment_id=${appointmentId}`;
+    else url += `phone_number=${phoneNumber}`;
+    
+    try {
+        const response = await fetch(url);
+        const result = await response.json();
+        
+        if (result.success) {
+            currentAppointment = result.appointment;
+            displayAppointment(result.appointment);
+        } else {
+            document.getElementById('appointmentResult').style.display = 'none';
+            document.getElementById('noAppointment').style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
+
+function displayAppointment(appointment) {
+    document.getElementById('resultAppointmentId').textContent = appointment.appointment_id || 'N/A';
+    document.getElementById('resultTokenNumber').textContent = appointment.token_number || 'N/A';
+    document.getElementById('resultPatientName').textContent = appointment.patient_name || 'N/A';
+    document.getElementById('resultDoctorName').textContent = appointment.doctor || 'N/A';
+    document.getElementById('resultAppointmentDate').textContent = appointment.appointment_date || 'N/A';
+    document.getElementById('resultAppointmentTime').textContent = appointment.appointment_time || 'N/A';
+    document.getElementById('resultBookingType').textContent = appointment.booking_type || 'N/A';
+    document.getElementById('resultSymptoms').textContent = appointment.symptoms || 'N/A';
+    
+    // Format booking time
+    if (appointment.booking_time) {
+        const bookingDate = new Date(appointment.booking_time);
+        document.getElementById('resultBookingTime').textContent = bookingDate.toLocaleString();
+    } else {
+        document.getElementById('resultBookingTime').textContent = 'N/A';
+    }
+    
+    // Get department
+    getDepartment(appointment.doctor);
+    
+    // Display status with badge
+    const statusElement = document.getElementById('resultStatus');
+    const status = appointment.status || 'Pending';
+    statusElement.innerHTML = `<span class="badge bg-${getStatusColor(status)}">${status}</span>`;
+    
+    document.getElementById('noAppointment').style.display = 'none';
+    document.getElementById('appointmentResult').style.display = 'block';
+}
+
+async function getDepartment(doctorName) {
+    try {
+        const response = await fetch(`/api/get-doctor-department/?doctor_name=${encodeURIComponent(doctorName)}`);
+        const result = await response.json();
+        document.getElementById('resultDepartment').textContent = result.department || 'General Medicine';
+    } catch (error) {
+        document.getElementById('resultDepartment').textContent = 'General Medicine';
+    }
+}
+
+function getStatusColor(status) {
+    const colors = {
+        'Pending': 'warning',
+        'Confirmed': 'primary',
+        'In Consultation': 'orange',
+        'Completed': 'success',
+        'Cancelled': 'danger'
+    };
+    return colors[status] || 'secondary';
+}
+
+function downloadPatientPDF() {
+    if (!currentAppointment || !currentAppointment.appointment_id) {
+        alert('Appointment ID not available');
+        return;
+    }
+    const url = `/api/export-single-appointment-pdf/?appointment_id=${currentAppointment.appointment_id}`;
+    window.open(url, '_blank');
+}
+</script>
+{% endblock %}
