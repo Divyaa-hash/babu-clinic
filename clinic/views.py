@@ -610,22 +610,22 @@ def api_update_appointment_status(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            appointment_id = data.get('appointment_id')
+            firebase_id = data.get('firebase_id')
             new_status = data.get('status')
             
-            if not appointment_id or not new_status:
-                return JsonResponse({'success': False, 'error': 'Appointment ID and Status are required'}, status=400)
+            if not firebase_id or not new_status:
+                return JsonResponse({'success': False, 'error': 'Firebase ID and Status are required'}, status=400)
             
             # Get appointment details for SMS notification
             appointment_data = None
             if db:
-                doc = db.collection('appointments').document(appointment_id).get()
+                doc = db.collection('appointments').document(firebase_id).get()
                 if doc.exists:
                     appointment_data = doc.to_dict()
             
             # Update in Firebase
             if db:
-                db.collection('appointments').document(appointment_id).update({
+                db.collection('appointments').document(firebase_id).update({
                     'status': new_status
                 })
             
@@ -655,14 +655,14 @@ def api_delete_appointment(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            appointment_id = data.get('appointment_id')
+            firebase_id = data.get('firebase_id')
             
-            if not appointment_id:
-                return JsonResponse({'success': False, 'error': 'Appointment ID is required'}, status=400)
+            if not firebase_id:
+                return JsonResponse({'success': False, 'error': 'Firebase ID is required'}, status=400)
             
             # Delete from Firebase
             if db:
-                db.collection('appointments').document(appointment_id).delete()
+                db.collection('appointments').document(firebase_id).delete()
             
             return JsonResponse({'success': True, 'message': 'Appointment deleted successfully'})
             
