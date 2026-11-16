@@ -21,6 +21,14 @@ if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
 if os.environ.get('GAE_APPLICATION'):
     # Google App Engine
     ALLOWED_HOSTS.append('.appspot.com')
+# Vercel deployments use *.vercel.app domains
+ALLOWED_HOSTS.append('.vercel.app')
+
+# Trust X-Forwarded-Proto from proxies (Vercel, Render) for HTTPS detection
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# CSRF trusted origins for HTTPS POST requests (comma-separated env var)
+CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o]
 
 # Application definition
 INSTALLED_APPS = [
@@ -101,6 +109,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+# Serve static files via WhiteNoise finders without requiring collectstatic
+WHITENOISE_USE_FINDERS = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
