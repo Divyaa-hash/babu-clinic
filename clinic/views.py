@@ -10,36 +10,48 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
 from datetime import datetime
+import firebase_admin
+from firebase_admin import credentials, firestore
 import os
 import uuid
-from .models import Appointment, Review, ContactMessage
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
 
-def appointment_to_dict(appointment):
-    """Serialize an Appointment model instance to a dict for JSON responses."""
-    return {
-        'firebase_id': str(appointment.pk),
-        'appointment_id': appointment.appointment_id,
-        'token_number': appointment.token_number,
-        'patient_name': appointment.patient_name,
-        'age': appointment.age,
-        'gender': appointment.gender,
-        'phone': appointment.phone,
-        'email': appointment.email,
-        'address': appointment.address,
-        'doctor': appointment.doctor,
-        'appointment_date': appointment.appointment_date,
-        'appointment_time': appointment.appointment_time,
-        'symptoms': appointment.symptoms,
-        'notes': appointment.notes,
-        'status': appointment.status,
-        'booking_type': appointment.booking_type,
-        'booking_time': appointment.booking_time,
-    }
+# Initialize Firebase
+try:
+    cred_path = settings.FIREBASE_CREDENTIALS_PATH
+    if os.path.exists(cred_path):
+        cred = credentials.Certificate(cred_path)
+        firebase_admin.initialize_app(cred)
+    else:
+        # Try to use environment variables for Firebase credentials
+        firebase_creds = {
+            'type': os.environ.get('FIREBASE_TYPE', 'service_account'),
+            'project_id': os.environ.get('FIREBASE_PROJECT_ID', ''),
+            'private_key_id': os.environ.get('FIREBASE_PRIVATE_KEY_ID', ''),
+            'private_key': os.environ.get('FIREBASE_PRIVATE_KEY', '').replace('\\n', '\n'),
+            'client_email': os.environ.get('FIREBASE_CLIENT_EMAIL', ''),
+            'client_id': os.environ.get('FIREBASE_CLIENT_ID', ''),
+            'auth_uri': os.environ.get('FIREBASE_AUTH_URI', 'https://accounts.google.com/o/oauth2/auth'),
+            'token_uri': os.environ.get('FIREBASE_TOKEN_URI', 'https://oauth2.googleapis.com/token'),
+            'auth_provider_x509_cert_url': os.environ.get('FIREBASE_AUTH_PROVIDER_X509_CERT_URL', 'https://www.googleapis.com/oauth2/v1/certs'),
+            'client_x509_cert_url': os.environ.get('FIREBASE_CLIENT_X509_CERT_URL', ''),
+        }
+        
+        # Check if we have the required environment variables
+        if firebase_creds['project_id'] and firebase_creds['private_key'] and firebase_creds['client_email']:
+            cred = credentials.Certificate(firebase_creds)
+            firebase_admin.initialize_app(cred)
+        else:
+            # Initialize without credentials for development (will fail in production)
+            firebase_admin.initialize_app()
+    db = firestore.client()
+except Exception as e:
+    print(f"Firebase initialization error: {e}")
+    db = None
 
 # Function to send SMS notification
 def send_sms_notification(phone_number, message):
@@ -264,16 +276,14 @@ def api_appointment(request):
                 'booking_time': datetime.now().isoformat(),
             }
             
-            # Save to database
-            Appointment.objects.create(**appointment_data)
+            # Save to Firebase
+            if db:
+                db.collection('appointments').add(appointment_data)
             
             return JsonResponse({'success': True, 'message': 'Appointment booked successfully!', 'appointment_id': appointment_id, 'token_number': token_number})
             
         except Exception as e:
-            db_engine = settings.DATABASES['default']['ENGINE']
-            db_url = os.environ.get('DATABASE_URL', '')
-            db_scheme = db_url.split(':', 1)[0] if db_url else 'unset'
-            return JsonResponse({'success': False, 'error': f'{e} [engine={db_engine}, url_scheme={db_scheme}]'}, status=500)
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
     
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
 
@@ -300,8 +310,9 @@ def api_contact(request):
                 'submitted_at': datetime.now().isoformat(),
             }
             
-            # Save to database
-            ContactMessage.objects.create(**contact_data)
+            # Save to Firebase
+            if db:
+                db.collection('contact_messages').add(contact_data)
             
             return JsonResponse({'success': True, 'message': 'Message sent successfully!'})
             
@@ -327,8 +338,9 @@ def api_submit_review(request):
                 'approved': True  # Auto-approve for immediate display
             }
             
-            # Save to database
-            Review.objects.create(**review_data)
+            # Save to Firebase
+            if db:
+                db.collection('reviews').add(review_data)
             
             return JsonResponse({'success': True, 'message': 'Review submitted successfully! Your review is now visible.'})
             
@@ -343,17 +355,13 @@ def api_get_reviews(request):
     """API endpoint to get approved patient reviews"""
     if request.method == 'GET':
         try:
-            reviews = [
-                {
-                    'id': str(review.pk),
-                    'patient_name': review.patient_name,
-                    'rating': review.rating,
-                    'review_text': review.review_text,
-                    'department': review.department,
-                    'created_at': review.created_at,
-                }
-                for review in Review.objects.filter(approved=True)
-            ]
+            reviews = []
+            if db:
+                docs = db.collection('reviews').where('approved', '==', True).stream()
+                for doc in docs:
+                    review = doc.to_dict()
+                    review['id'] = doc.id
+                    reviews.append(review)
             
             return JsonResponse({'success': True, 'reviews': reviews})
             
@@ -423,8 +431,9 @@ def api_walkin_appointment(request):
                 'booking_time': datetime.now().isoformat(),
             }
             
-            # Save to database
-            Appointment.objects.create(**appointment_data)
+            # Save to Firebase
+            if db:
+                db.collection('appointments').add(appointment_data)
             
             return JsonResponse({
                 'success': True, 
@@ -450,18 +459,26 @@ def api_get_appointments(request):
             date = request.GET.get('date', '')
             doctor = request.GET.get('doctor', '')
             
-            # Query database with filters
-            appointments_qs = Appointment.objects.all()
-            if booking_type:
-                appointments_qs = appointments_qs.filter(booking_type=booking_type)
-            if status:
-                appointments_qs = appointments_qs.filter(status=status)
-            if date:
-                appointments_qs = appointments_qs.filter(appointment_date=date)
-            if doctor:
-                appointments_qs = appointments_qs.filter(doctor=doctor)
-            
-            appointments = [appointment_to_dict(a) for a in appointments_qs.order_by('-created_at')]
+            # Query Firebase
+            appointments = []
+            if db:
+                query = db.collection('appointments')
+                
+                # Apply filters
+                if booking_type:
+                    query = query.where('booking_type', '==', booking_type)
+                if status:
+                    query = query.where('status', '==', status)
+                if date:
+                    query = query.where('appointment_date', '==', date)
+                if doctor:
+                    query = query.where('doctor', '==', doctor)
+                
+                docs = query.stream()
+                for doc in docs:
+                    appointment = doc.to_dict()
+                    appointment['firebase_id'] = doc.id
+                    appointments.append(appointment)
             
             return JsonResponse({'success': True, 'appointments': appointments})
             
@@ -492,33 +509,37 @@ def api_appointment_statistics(request):
                 'cancelled': 0,
             }
             
-            for appointment in Appointment.objects.all():
-                statistics['total'] += 1
-                
-                # Count by booking type
-                if appointment.booking_type == 'Online':
-                    statistics['total_online'] += 1
-                    if appointment.appointment_date == today:
-                        statistics['today_online'] += 1
-                        statistics['today'] += 1
-                elif appointment.booking_type == 'Walk-in':
-                    statistics['total_walkin'] += 1
-                    if appointment.appointment_date == today:
-                        statistics['today_walkin'] += 1
-                        statistics['today'] += 1
-                
-                # Count by status
-                status = (appointment.status or '').lower()
-                if status == 'pending':
-                    statistics['pending'] += 1
-                elif status == 'confirmed':
-                    statistics['confirmed'] += 1
-                elif status == 'in consultation':
-                    statistics['in_consultation'] += 1
-                elif status == 'completed':
-                    statistics['completed'] += 1
-                elif status == 'cancelled':
-                    statistics['cancelled'] += 1
+            if db:
+                # Get all appointments
+                docs = db.collection('appointments').stream()
+                for doc in docs:
+                    appointment = doc.to_dict()
+                    statistics['total'] += 1
+                    
+                    # Count by booking type
+                    if appointment.get('booking_type') == 'Online':
+                        statistics['total_online'] += 1
+                        if appointment.get('appointment_date') == today:
+                            statistics['today_online'] += 1
+                            statistics['today'] += 1
+                    elif appointment.get('booking_type') == 'Walk-in':
+                        statistics['total_walkin'] += 1
+                        if appointment.get('appointment_date') == today:
+                            statistics['today_walkin'] += 1
+                            statistics['today'] += 1
+                    
+                    # Count by status
+                    status = appointment.get('status', '').lower()
+                    if status == 'pending':
+                        statistics['pending'] += 1
+                    elif status == 'confirmed':
+                        statistics['confirmed'] += 1
+                    elif status == 'in consultation':
+                        statistics['in_consultation'] += 1
+                    elif status == 'completed':
+                        statistics['completed'] += 1
+                    elif status == 'cancelled':
+                        statistics['cancelled'] += 1
             
             return JsonResponse({'success': True, 'statistics': statistics})
             
@@ -538,23 +559,27 @@ def api_update_appointment_status(request):
             new_status = data.get('status')
             
             if not firebase_id or not new_status:
-                return JsonResponse({'success': False, 'error': 'ID and Status are required'}, status=400)
+                return JsonResponse({'success': False, 'error': 'Firebase ID and Status are required'}, status=400)
             
             # Get appointment details for SMS notification
-            try:
-                appointment = Appointment.objects.get(pk=int(firebase_id))
-            except (Appointment.DoesNotExist, ValueError):
-                return JsonResponse({'success': False, 'error': 'Appointment not found'}, status=404)
+            appointment_data = None
+            if db:
+                doc = db.collection('appointments').document(firebase_id).get()
+                if doc.exists:
+                    appointment_data = doc.to_dict()
             
-            appointment.status = new_status
-            appointment.save(update_fields=['status'])
+            # Update in Firebase
+            if db:
+                db.collection('appointments').document(firebase_id).update({
+                    'status': new_status
+                })
             
             # Send SMS notification when status is confirmed
-            if new_status == 'Confirmed':
-                phone_number = appointment.phone
-                patient_name = appointment.patient_name
-                appointment_date = appointment.appointment_date
-                appointment_time = appointment.appointment_time
+            if new_status == 'Confirmed' and appointment_data:
+                phone_number = appointment_data.get('phone', '')
+                patient_name = appointment_data.get('patient_name', '')
+                appointment_date = appointment_data.get('appointment_date', '')
+                appointment_time = appointment_data.get('appointment_time', '')
                 
                 message = f"Dear {patient_name}, Your appointment at BABU SUPER SPECIALITY CLINIC has been confirmed for {appointment_date} at {appointment_time}. Please arrive 15 minutes early. For queries: 7305493125"
                 
@@ -578,13 +603,11 @@ def api_delete_appointment(request):
             firebase_id = data.get('firebase_id')
             
             if not firebase_id:
-                return JsonResponse({'success': False, 'error': 'ID is required'}, status=400)
+                return JsonResponse({'success': False, 'error': 'Firebase ID is required'}, status=400)
             
-            # Delete from database
-            try:
-                Appointment.objects.get(pk=int(firebase_id)).delete()
-            except (Appointment.DoesNotExist, ValueError):
-                return JsonResponse({'success': False, 'error': 'Appointment not found'}, status=404)
+            # Delete from Firebase
+            if db:
+                db.collection('appointments').document(firebase_id).delete()
             
             return JsonResponse({'success': True, 'message': 'Appointment deleted successfully'})
             
@@ -624,14 +647,18 @@ def api_export_appointments_pdf(request):
             # Get filter parameters
             booking_type = request.GET.get('booking_type', '')
             
-            # Fetch appointments from database
-            appointments_qs = Appointment.objects.all()
-            if booking_type:
-                appointments_qs = appointments_qs.filter(booking_type=booking_type)
-            
-            appointments = [appointment_to_dict(a) for a in appointments_qs.order_by('-created_at')]
-            for apt in appointments:
-                apt['id'] = apt['firebase_id']
+            # Fetch appointments from Firebase
+            appointments = []
+            if db:
+                query = db.collection('appointments')
+                if booking_type:
+                    query = query.where('booking_type', '==', booking_type)
+                
+                docs = query.stream()
+                for doc in docs:
+                    appointment = doc.to_dict()
+                    appointment['id'] = doc.id
+                    appointments.append(appointment)
             
             # Create PDF
             response = HttpResponse(content_type='application/pdf')
@@ -722,13 +749,16 @@ def api_export_single_appointment_pdf(request):
             if not appointment_id:
                 return JsonResponse({'success': False, 'error': 'Appointment ID is required'}, status=400)
             
-            # Fetch appointment from database
-            appointment_obj = Appointment.objects.filter(appointment_id=appointment_id).first()
+            # Fetch appointment from Firebase
+            appointment = None
+            if db:
+                docs = db.collection('appointments').where('appointment_id', '==', appointment_id).stream()
+                for doc in docs:
+                    appointment = doc.to_dict()
+                    break
             
-            if not appointment_obj:
+            if not appointment:
                 return JsonResponse({'success': False, 'error': 'Appointment not found'}, status=404)
-            
-            appointment = appointment_to_dict(appointment_obj)
             
             # Create PDF
             response = HttpResponse(content_type='application/pdf')
@@ -841,25 +871,45 @@ def admin_logout(request):
 @login_required(login_url='/admin-login/')
 def admin_dashboard(request):
     """Admin dashboard with statistics"""
+    if not db:
+        return render(request, 'clinic/admin_dashboard.html', {
+            'error': 'Firebase connection not available'
+        })
+    
     try:
-        appointments_qs = Appointment.objects.all()
+        # Get all appointments
+        appointments_ref = db.collection('appointments')
+        appointments = appointments_ref.get()
         
-        total_appointments = appointments_qs.count()
+        total_appointments = len(list(appointments))
         
         # Get today's appointments
         today = datetime.now().strftime('%Y-%m-%d')
-        today_appointments = appointments_qs.filter(appointment_date=today).count()
+        today_ref = db.collection('appointments').where('date', '==', today)
+        today_appointments = len(list(today_ref.get()))
         
         # Get online vs walk-in
-        online_appointments = appointments_qs.filter(booking_type='Online').count()
-        walkin_appointments = appointments_qs.filter(booking_type='Walk-in').count()
+        online_ref = db.collection('appointments').where('booking_type', '==', 'Online')
+        online_appointments = len(list(online_ref.get()))
+        
+        walkin_ref = db.collection('appointments').where('booking_type', '==', 'Walk-in')
+        walkin_appointments = len(list(walkin_ref.get()))
         
         # Get status counts
-        pending_count = appointments_qs.filter(status='Pending').count()
-        confirmed_count = appointments_qs.filter(status='Confirmed').count()
-        in_consultation_count = appointments_qs.filter(status='In Consultation').count()
-        completed_count = appointments_qs.filter(status='Completed').count()
-        cancelled_count = appointments_qs.filter(status='Cancelled').count()
+        pending_ref = db.collection('appointments').where('status', '==', 'Pending')
+        pending_count = len(list(pending_ref.get()))
+        
+        confirmed_ref = db.collection('appointments').where('status', '==', 'Confirmed')
+        confirmed_count = len(list(confirmed_ref.get()))
+        
+        in_consultation_ref = db.collection('appointments').where('status', '==', 'In Consultation')
+        in_consultation_count = len(list(in_consultation_ref.get()))
+        
+        completed_ref = db.collection('appointments').where('status', '==', 'Completed')
+        completed_count = len(list(completed_ref.get()))
+        
+        cancelled_ref = db.collection('appointments').where('status', '==', 'Cancelled')
+        cancelled_count = len(list(cancelled_ref.get()))
         
         # Total doctors
         total_doctors = len(DOCTORS_DATA)
