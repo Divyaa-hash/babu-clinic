@@ -75,14 +75,33 @@ TEMPLATES = [
 WSGI_APPLICATION = 'babuclinic.wsgi.application'
 
 # Database
-# Database: uses DATABASE_URL (e.g. Neon Postgres on Vercel) when set,
-# otherwise falls back to local SQLite for development.
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-        conn_max_age=600,
-    )
-}
+# Database selection:
+# - DATABASE_URL=libsql://...  -> Turso (hosted SQLite) on Vercel
+# - DATABASE_URL=postgres://... -> Neon/other Postgres via dj-database-url
+# - no DATABASE_URL            -> local SQLite file for development
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
+
+if DATABASE_URL.startswith('libsql'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'libsql.db.backends.libsql',
+            'NAME': DATABASE_URL,
+            'OPTIONS': {
+                'auth_token': os.environ.get('TURSO_AUTH_TOKEN', ''),
+            },
+        }
+    }
+elif DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
