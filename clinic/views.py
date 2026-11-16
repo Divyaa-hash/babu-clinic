@@ -116,14 +116,6 @@ DOCTORS_DATA = [
         'specialization': 'Transplant Hematologist',
         'description': 'Expert in Blood Disorders, Bone Marrow Transplantation, Leukemia, Lymphoma, and Advanced Hematology Care.',
         'image': 'doctor4.jpg'
-    },
-    {
-        'id': 'dr-lakshmipriya',
-        'name': 'Dr. Lakshmipriya',
-        'qualification': 'MBBS, MS (OBG)',
-        'specialization': 'Gynecologist & Infertility Specialist',
-        'description': 'Experienced Women\'s Health Specialist providing pregnancy care, infertility treatment, and complete gynecological services.',
-        'image': 'doctor5.jpg'
     }
 ]
 
@@ -255,7 +247,7 @@ def api_appointment(request):
             data = json.loads(request.body)
             
             # Validate required fields
-            required_fields = ['patient_name', 'age', 'gender', 'phone', 'email', 'doctor', 'appointment_date', 'appointment_time']
+            required_fields = ['patient_name', 'age', 'gender', 'phone', 'doctor', 'appointment_date', 'appointment_time']
             for field in required_fields:
                 if not data.get(field):
                     return JsonResponse({'success': False, 'error': f'{field} is required'}, status=400)
@@ -272,7 +264,7 @@ def api_appointment(request):
                 'age': data['age'],
                 'gender': data['gender'],
                 'phone': data['phone'],
-                'email': data['email'],
+                'email': data.get('email', ''),
                 'address': data.get('address', ''),
                 'doctor': data['doctor'],
                 'appointment_date': data['appointment_date'],
@@ -400,54 +392,6 @@ def walkin_appointment(request):
         'page_description': 'Register walk-in patients',
     }
     return render(request, 'clinic/walkin_appointment.html', context)
-
-
-def track_appointment(request):
-    """Track appointment page for patients"""
-    context = {
-        'clinic': CLINIC_INFO,
-        'page_title': 'Track Appointment',
-        'page_description': 'Check your appointment status',
-    }
-    return render(request, 'clinic/track_appointment.html', context)
-
-
-@csrf_exempt
-def api_track_appointment(request):
-    """API endpoint for patients to track their appointment"""
-    if request.method == 'GET':
-        try:
-            appointment_id = request.GET.get('appointment_id', '')
-            phone_number = request.GET.get('phone_number', '')
-            
-            if not appointment_id and not phone_number:
-                return JsonResponse({'success': False, 'error': 'Appointment ID or Phone Number is required'}, status=400)
-            
-            # Query Firebase for matching appointment
-            appointment = None
-            if db:
-                if appointment_id:
-                    docs = db.collection('appointments').where('appointment_id', '==', appointment_id).stream()
-                    for doc in docs:
-                        appointment = doc.to_dict()
-                        appointment['firebase_id'] = doc.id
-                        break
-                elif phone_number:
-                    docs = db.collection('appointments').where('phone', '==', phone_number).stream()
-                    for doc in docs:
-                        appointment = doc.to_dict()
-                        appointment['firebase_id'] = doc.id
-                        break
-            
-            if appointment:
-                return JsonResponse({'success': True, 'appointment': appointment})
-            else:
-                return JsonResponse({'success': False, 'error': 'No appointment found'})
-            
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=500)
-    
-    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
 
 
 @csrf_exempt

@@ -60,7 +60,7 @@ body {
 .navbar {
     background: var(--white) !important;
     box-shadow: var(--shadow);
-    padding: 15px 0;
+    padding: 0;
     transition: var(--transition);
 }
 
@@ -77,8 +77,9 @@ body {
 }
 
 .logo-img {
-    height: 50px;
+    height: 115px;
     width: auto;
+    display: block;
 }
 
 .brand-text {
@@ -1028,4 +1029,255 @@ body {
     margin-bottom: 0;
     opacity: 0.9;
     font-size: 0.9rem;
+}
+
+/* ===== 24/7 Emergency Siren Banner (all pages) ===== */
+.siren-banner {
+    position: relative;
+    background: linear-gradient(135deg, #8b0000 0%, #c1121f 45%, #7a0e0e 100%);
+    color: #ffffff;
+    padding: 1.4rem 0;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(193, 18, 31, 0.55);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.25);
+    animation: sirenBannerGlow 3.5s ease-in-out infinite;
+}
+
+@keyframes sirenBannerGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.12); }
+}
+
+.siren-banner::before,
+.siren-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 35%;
+    pointer-events: none;
+}
+
+.siren-banner::before {
+    left: -35%;
+    background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.18) 50%, transparent 100%);
+    transform: skewX(-15deg);
+    animation: sirenSweepLeft 6s ease-in-out infinite;
+}
+
+.siren-banner::after {
+    right: -35%;
+    background: linear-gradient(80deg, transparent 0%, rgba(255, 255, 255, 0.18) 50%, transparent 100%);
+    transform: skewX(15deg);
+    animation: sirenSweepRight 6s ease-in-out infinite;
+    animation-delay: 3s;
+}
+
+@keyframes sirenSweepLeft {
+    0%, 100% { left: -35%; opacity: 0; }
+    50% { left: 100%; opacity: 1; }
+}
+
+@keyframes sirenSweepRight {
+    0%, 100% { right: -35%; opacity: 0; }
+    50% { right: 100%; opacity: 1; }
+}
+
+.siren-lights {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.siren-light {
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ff8a8a, #e50914 60%, #8b0000);
+    transform: translateY(-50%);
+    box-shadow: 0 0 14px 5px rgba(255, 60, 60, 0.8), 0 0 40px 15px rgba(229, 9, 20, 0.35);
+    animation: sirenPulse 2.4s ease-in-out infinite;
+}
+
+.siren-light-left {
+    left: 4%;
+    animation-delay: 0s;
+}
+
+.siren-light-right {
+    right: 4%;
+    animation-delay: 1.2s;
+}
+
+@keyframes sirenPulse {
+    0%, 100% {
+        opacity: 0.65;
+        box-shadow: 0 0 10px 3px rgba(255, 60, 60, 0.5), 0 0 24px 8px rgba(229, 9, 20, 0.25);
+        transform: translateY(-50%) scale(0.9);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 18px 7px rgba(255, 60, 60, 0.95), 0 0 48px 18px rgba(229, 9, 20, 0.5);
+        transform: translateY(-50%) scale(1.15);
+    }
+}
+
+.siren-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.siren-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.siren-icon {
+    font-size: 1.4rem;
+    color: #ffd6d6;
+    animation: sirenBlink 1.6s ease-in-out infinite;
+}
+
+.siren-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+    color: #ffffff;
+    animation: sirenGlow 2.4s ease-in-out infinite;
+}
+
+.siren-subtitle {
+    margin: 0.35rem 0 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #ffe3e3;
+}
+
+@keyframes sirenGlow {
+    0%, 100% {
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+    50% {
+        text-shadow: 0 0 18px rgba(255, 120, 120, 0.9), 0 0 36px rgba(255, 60, 60, 0.6), 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+}
+
+@keyframes sirenBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+@media (max-width: 768px) {
+    .siren-banner {
+        padding: 1.1rem 0;
+    }
+
+    .siren-title {
+        font-size: 2rem;
+        letter-spacing: 0.04em;
+    }
+
+    .siren-subtitle {
+        font-size: 0.75rem;
+        letter-spacing: 0.18em;
+    }
+
+    .siren-icon {
+        font-size: 1rem;
+    }
+
+    .siren-light {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .siren-title {
+        font-size: 1.6rem;
+    }
+
+    .siren-subtitle {
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+    }
+
+    .siren-light-left { left: 2%; }
+    .siren-light-right { right: 2%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .siren-banner,
+    .siren-banner::before,
+    .siren-banner::after,
+    .siren-light,
+    .siren-icon,
+    .siren-title {
+        animation: none !important;
+    }
+
+    .siren-banner {
+        filter: none;
+    }
+}
+
+/* ===== Floating WhatsApp Button ===== */
+.whatsapp-float {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 58px;
+    height: 58px;
+    background: #25D366;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+    z-index: 1040;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: whatsappPulse 2.5s ease-in-out infinite;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
+    color: #ffffff;
+}
+
+@keyframes whatsappPulse {
+    0%, 100% {
+        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45), 0 0 0 0 rgba(37, 211, 102, 0.5);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45), 0 0 0 14px rgba(37, 211, 102, 0);
+    }
+}
+
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 52px;
+        height: 52px;
+        font-size: 26px;
+        bottom: 18px;
+        right: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .whatsapp-float {
+        animation: none;
+    }
 }

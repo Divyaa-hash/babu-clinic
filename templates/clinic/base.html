@@ -14,7 +14,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/style.css?v=3" rel="stylesheet">
     
     <style>
         /* Mobile Responsive Styles */
@@ -31,16 +31,15 @@
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .logo-img {
-                height: 50px;
-                margin-bottom: 0.5rem;
+                height: 80px;
             }
-            
+
             .brand-name {
                 font-size: 1rem;
             }
-            
+
             .brand-tagline {
                 font-size: 0.8rem;
             }
@@ -115,10 +114,6 @@
             <a class="navbar-brand" href="{% url 'home' %}">
                 <div class="brand-logo">
                     <img src="{{ STATIC_URL }}images/logo-white.png" alt="{{ clinic.name }}" class="logo-img">
-                    <div class="brand-text">
-                        <span class="brand-name">{{ clinic.name }}</span>
-                        <span class="brand-tagline">{{ clinic.tagline }}</span>
-                    </div>
                 </div>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -142,15 +137,30 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'track_appointment' %}active{% endif %}" href="{% url 'track_appointment' %}">Track Appointment</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="btn btn-appointment ms-3" href="{% url 'appointment' %}">Book Now</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <!-- 24/7 Emergency Availability Siren Banner -->
+    <section class="siren-banner" aria-label="Clinic open 24 hours, 7 days a week">
+        <div class="siren-lights" aria-hidden="true">
+            <span class="siren-light siren-light-left"></span>
+            <span class="siren-light siren-light-right"></span>
+        </div>
+        <div class="container">
+            <div class="siren-content">
+                <div class="siren-heading">
+                    <span class="siren-icon"><i class="fas fa-triangle-exclamation"></i></span>
+                    <span class="siren-title">OPEN 24/7</span>
+                    <span class="siren-icon"><i class="fas fa-triangle-exclamation"></i></span>
+                </div>
+                <p class="siren-subtitle">CLINIC AVAILABLE 24 HOURS – ALL DAYS</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Main Content -->
     {% block content %}{% endblock %}
@@ -216,6 +226,14 @@
             </div>
         </div>
     </footer>
+
+    <!-- Floating WhatsApp Button -->
+    {% if '/admin' not in request.path %}
+    <a href="https://wa.me/917305493125?text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment%20at%20BABU%20SUPER%20SPECIALITY%20CLINIC"
+       class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    {% endif %}
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

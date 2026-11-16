@@ -100,6 +100,72 @@
             padding: 1.25rem;
         }
     }
+
+    /* ===== Booking Success Modal ===== */
+    #successModal .modal-content {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    #successModal .modal-body {
+        padding: 2.75rem 2rem 2rem;
+    }
+
+    #successModal .success-icon {
+        font-size: 72px;
+        color: #00b894;
+        animation: successPop 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    @keyframes successPop {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    #successModal .booking-details {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        text-align: left;
+    }
+
+    #successModal .booking-details .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.3rem 0;
+        font-size: 0.95rem;
+    }
+
+    #successModal .booking-details .detail-row span:first-child {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    #successModal .booking-details .detail-row span:last-child {
+        font-weight: 700;
+        color: #212529;
+    }
+
+    .btn-whatsapp {
+        background: #25D366;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 0.8rem 1.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+    }
+
+    .btn-whatsapp:hover {
+        background: #1eb856;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+    }
 </style>
 
 <!-- Appointment Form Section -->
@@ -139,8 +205,8 @@
                                 <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{10}" placeholder="10-digit number">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <label for="email" class="form-label">Email Address (Optional)</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com">
                             </div>
                         </div>
                         <div class="mb-3">
@@ -206,19 +272,28 @@
                 <div class="success-icon mb-4">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <h3>Appointment Booked Successfully!</h3>
-                <p class="mb-4">Please save your appointment details for future reference.</p>
-                <div class="alert alert-info mb-4">
-                    <div class="mb-2">
-                        <strong>Appointment ID:</strong> <span id="modalAppointmentId" class="fs-5">-</span>
+                <h3>Appointment Request Ready!</h3>
+                <p class="mb-4">Your appointment request is ready. Please send the WhatsApp message to complete your request.</p>
+                <div class="booking-details mb-4">
+                    <div class="detail-row">
+                        <span>Appointment ID</span>
+                        <span id="modalAppointmentId">-</span>
                     </div>
-                    <div>
-                        <strong>Token Number:</strong> <span id="modalTokenNumber" class="fs-5">-</span>
+                    <div class="detail-row">
+                        <span>Token Number</span>
+                        <span id="modalTokenNumber">-</span>
                     </div>
                 </div>
-                <p class="mb-4">Use your Appointment ID to track your appointment status on our website.</p>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="window.location.href='{% url 'track_appointment' %}'">Track Appointment</button>
-                <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" onclick="window.location.href='{% url 'home' %}'">Home</button>
+                <div id="whatsappHint" class="alert alert-warning d-none mb-3" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    WhatsApp could not be opened automatically. Please tap the button below to send your appointment details.
+                </div>
+                <div class="d-grid gap-2 mb-3">
+                    <a id="whatsappBtn" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg">
+                        <i class="fab fa-whatsapp me-2"></i>Send Appointment on WhatsApp
+                    </a>
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href='{% url 'home' %}'">Home</button>
             </div>
         </div>
     </div>
@@ -254,8 +329,44 @@ document.addEventListener('DOMContentLoaded', function() {
             if (result.success) {
                 document.getElementById('modalAppointmentId').textContent = result.appointment_id;
                 document.getElementById('modalTokenNumber').textContent = result.token_number;
+
+                // Build WhatsApp message with all patient details for the clinic
+                const doctorSelect = document.getElementById('doctor');
+                const doctorText = doctorSelect.selectedOptions[0] ? doctorSelect.selectedOptions[0].text : data.doctor;
+                const doctorParts = doctorText.split(' - ');
+                const doctorName = doctorParts[0] || data.doctor;
+                const department = doctorParts[1] || '-';
+                const message = [
+                    'New Appointment Request',
+                    '',
+                    'Clinic: Babu Super Speciality Clinic',
+                    '',
+                    `Patient Name: ${data.patient_name}`,
+                    `Mobile Number: ${data.phone}`,
+                    `Email: ${data.email || '-'}`,
+                    `Department: ${department}`,
+                    `Doctor: ${doctorName}`,
+                    `Appointment Date: ${data.appointment_date}`,
+                    `Appointment Time: ${data.appointment_time}`,
+                    `Reason: ${data.symptoms || '-'}`,
+                    '',
+                    `Appointment ID: ${result.appointment_id}`,
+                    `Token Number: ${result.token_number}`,
+                    '',
+                    'Please confirm this appointment.'
+                ].join('\n');
+                const waUrl = `https://wa.me/917305493125?text=${encodeURIComponent(message)}`;
+                document.getElementById('whatsappBtn').href = waUrl;
+                document.getElementById('whatsappHint').classList.add('d-none');
+
                 const modal = new bootstrap.Modal(document.getElementById('successModal'));
                 modal.show();
+
+                // Auto-open WhatsApp; if the browser blocks the popup, show the fallback hint
+                const waWindow = window.open(waUrl, '_blank');
+                if (!waWindow) {
+                    document.getElementById('whatsappHint').classList.remove('d-none');
+                }
             } else {
                 alert('Error: ' + result.error);
             }
