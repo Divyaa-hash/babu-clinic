@@ -270,7 +270,10 @@ def api_appointment(request):
             return JsonResponse({'success': True, 'message': 'Appointment booked successfully!', 'appointment_id': appointment_id, 'token_number': token_number})
             
         except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+            db_engine = settings.DATABASES['default']['ENGINE']
+            db_url = os.environ.get('DATABASE_URL', '')
+            db_scheme = db_url.split(':', 1)[0] if db_url else 'unset'
+            return JsonResponse({'success': False, 'error': f'{e} [engine={db_engine}, url_scheme={db_scheme}]'}, status=500)
     
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
 
