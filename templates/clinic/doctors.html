@@ -165,7 +165,13 @@
             <h1>Our Doctors</h1>
             <p>Meet our team of highly qualified and experienced medical professionals</p>
         </div>
-        
+
+        <div class="row mb-5">
+            <div class="col-12">
+                <img src="{{ STATIC_URL }}images/team-doctors.jpg" alt="Our Medical Team" class="img-fluid shadow-lg w-100" style="max-height: 400px; object-fit: cover; border-radius: 15px;">
+            </div>
+        </div>
+
         <div class="row">
             {% for doctor in doctors %}
             <div class="col-lg-4 col-md-6 mb-4">
