@@ -74,7 +74,7 @@ DOCTORS_DATA = [
     {
         'id': 'dr-salman',
         'name': 'Dr. Salman Basha',
-        'qualification': 'MBBS, FIDM',
+        'qualification': 'MBBS, MD, FIDM',
         'specialization': 'Family & General Physician',
         'description': 'Experienced Family Physician providing comprehensive healthcare, preventive medicine, routine checkups, diagnosis, and treatment for patients of all ages.',
         'image': 'doctor1.jpg'
