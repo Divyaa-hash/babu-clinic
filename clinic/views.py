@@ -109,8 +109,8 @@ DOCTORS_DATA = [
         'id': 'dr-pavithran',
         'name': 'Dr. Pavithran Periyasamy',
         'qualification': 'MBBS',
-        'specialization': 'Duty Doctor',
-        'description': 'Duty Doctor at BABU SUPER SPECIALITY CLINIC.',
+        'specialization': 'Medical Officer',
+        'description': 'Medical Officer.',
         'image': ''
     }
 ]
