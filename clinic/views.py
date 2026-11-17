@@ -104,6 +104,14 @@ DOCTORS_DATA = [
         'specialization': 'Transplant Hematologist',
         'description': 'Expert in Blood Disorders, Bone Marrow Transplantation, Leukemia, Lymphoma, and Advanced Hematology Care.',
         'image': 'doctor4.jpg'
+    },
+    {
+        'id': 'dr-pavithran',
+        'name': 'Dr. Pavithran Periyasamy',
+        'qualification': 'MBBS',
+        'specialization': 'Duty Doctor',
+        'description': 'Duty Doctor at BABU SUPER SPECIALITY CLINIC.',
+        'image': ''
     }
 ]
 
