@@ -136,7 +136,7 @@ FACILITIES = [
     {'name': 'ECHO', 'icon': 'fa-heart-pulse', 'color': '#e91e63'},
     {'name': 'ECG', 'icon': 'fa-heartbeat', 'color': '#f44336'},
     {'name': 'Daycare Services', 'icon': 'fa-bed', 'color': '#ff9800'},
-    {'name': 'Home Care', 'icon': 'fa-house-medical', 'color': '#795548'},
+    {'name': 'Home Visit', 'icon': 'fa-house-medical', 'color': '#795548'},
 ]
 
 # Why Choose Us
