@@ -117,14 +117,15 @@ DOCTORS_DATA = [
 
 # Departments
 DEPARTMENTS = [
-    {'name': 'Gynecology', 'icon': 'fa-heartbeat', 'color': '#e91e63'},
-    {'name': 'Dermatology', 'icon': 'fa-hand-sparkles', 'color': '#9c27b0'},
-    {'name': 'General Medicine', 'icon': 'fa-stethoscope', 'color': '#2196f3'},
-    {'name': 'Diabetology', 'icon': 'fa-droplet', 'color': '#f44336'},
-    {'name': 'Cardiology', 'icon': 'fa-heart', 'color': '#e91e63'},
-    {'name': 'Neurology', 'icon': 'fa-brain', 'color': '#673ab7'},
-    {'name': 'ENT', 'icon': 'fa-ear-listen', 'color': '#ff9800'},
-    {'name': 'Paediatrics', 'icon': 'fa-baby', 'color': '#4caf50'},
+    {'name': 'Gynecology', 'icon': 'fa-heartbeat', 'color': '#e91e63', 'description': 'Comprehensive women health care and maternity services'},
+    {'name': 'Dermatology', 'icon': 'fa-hand-sparkles', 'color': '#9c27b0', 'description': 'Expert skin care and treatment for all dermatological conditions'},
+    {'name': 'General Medicine', 'icon': 'fa-stethoscope', 'color': '#2196f3', 'description': 'Primary healthcare and treatment for common illnesses'},
+    {'name': 'Diabetology', 'icon': 'fa-droplet', 'color': '#f44336', 'description': 'Specialized diabetes management and preventive care'},
+    {'name': 'Cardiology', 'icon': 'fa-heart', 'color': '#e91e63', 'description': 'Heart care and cardiovascular disease treatment'},
+    {'name': 'Neurology', 'icon': 'fa-brain', 'color': '#673ab7', 'description': 'Diagnosis and treatment of neurological disorders'},
+    {'name': 'ENT', 'icon': 'fa-ear-listen', 'color': '#ff9800', 'description': 'Ear, nose and throat specialty care'},
+    {'name': 'Paediatrics', 'icon': 'fa-baby', 'color': '#4caf50', 'description': 'Specialized healthcare for infants and children'},
+    {'name': 'Home Visit', 'icon': 'fa-house-medical', 'color': '#795548', 'description': 'Doctor home visits for patients who cannot travel to the clinic'},
 ]
 
 # Facilities
